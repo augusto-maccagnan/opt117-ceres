@@ -51,12 +51,11 @@
 #include "hud.h"
 
 // index for tiles in VRAM (first tile reserved for SGDK)
-// u16 ind = 1;
 u16 ind = TILE_USER_INDEX;
 
 // glow color effect
-u8 bg_colors_delay = 5;
-const u16 const bg_color_glow[] = {0x0, 0x222, 0x444, 0x666, 0x888};
+// u8 bg_colors_delay = 5;
+// const u16 const bg_color_glow[] = {0x0, 0x222, 0x444, 0x666, 0x888};
 
 #define MAX_OBJ 1
 GameObject balls[MAX_OBJ];
@@ -77,7 +76,7 @@ void game_init() {
 	ind += HUD_init(ind);
 	#endif
 
-	ind += LEVEL_init(ind);
+	// ind += LEVEL_init(ind);
 	
 	#ifdef DEBUG
 	LEVEL_draw_map();
@@ -91,29 +90,24 @@ void game_init() {
 ////////////////////////////////////////////////////////////////////////////
 // GAME LOGIC
 
-static inline void color_effects() {
-	--bg_colors_delay;
-	if (bg_colors_delay == 0) {
-		// rotate_colors_left(PAL_BACKGROUND*16, PAL_BACKGROUND*16+15);
-		glow_color(PAL_BACKGROUND*16+8, bg_color_glow, 5);
+// static inline void color_effects() {
+// 	--bg_colors_delay;
+// 	if (bg_colors_delay == 0) {
+// 		// rotate_colors_left(PAL_BACKGROUND*16, PAL_BACKGROUND*16+15);
+// 		glow_color(PAL_BACKGROUND*16+8, bg_color_glow, 5);
 
-		bg_colors_delay = 15;
-	}
-}
+// 		bg_colors_delay = 15;
+// 	}
+// }
 
 static inline void game_update() {
 	update_input();
 
 	PLAYER_update();
-	// LEVEL_generate_screen_collision_map(0,5);
-	// LEVEL_restore_items(screen_y/SCREEN_H * 3 + screen_x/SCREEN_W);
 
 	#ifndef DEBUG
 	BACKGROUND_update();
 	#endif
-
-	LEVEL_update_camera(&player);
-	color_effects();
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -136,7 +130,7 @@ int main(bool resetType) {
 		SYS_doVBlankProcess();
 
 		// update VDP map manually
-		LEVEL_update_items_in_VDP();
+		// LEVEL_update_items_in_VDP();
 	}
 
 	return 0;

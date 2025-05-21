@@ -1,7 +1,8 @@
 SPRITE  spr_ship            "sprites/ship-bounds.png"      3 3 FAST 3
 SPRITE  spr_ball            "sprites/ball.png"      2 2 FAST 3
 
-IMAGE   img_background    "backgrounds/level1_bg.png" BEST
+# IMAGE   img_background    "backgrounds/level1_bg.png" BEST
+IMAGE   img_background    "backgrounds/background_1.png" BEST
 IMAGE   img_hud           "hud/hud.png" FAST
 
 TILESET level1_tiles      "levels/level1/level1_tiles.png" BEST ALL
