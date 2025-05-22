@@ -1,15 +1,21 @@
 #include <genesis.h>
 #include "level.h"
 
+// #define DEBUG
+
+#define SCROLLING_SPEED 1
+
 Map* map;
-u8 collision_map[SCREEN_METATILES_W + OFFSCREEN_TILES*2][SCREEN_METATILES_H + OFFSCREEN_TILES*2] = {0}; // screen collision map
+u8 collision_map[SCREEN_METATILES_W + OFFSCREEN_TILES*2][(SCREEN_METATILES_H * (NUMBER_OF_ROOMS)) + OFFSCREEN_TILES*2] = {0}; // screen collision map
 
 // Top-Left screen position in map
 u16 screen_x = 0;
-u16 screen_y = 0;
+u16 screen_y = (NUMBER_OF_ROOMS-1)*SCREEN_H; // 224
 
 u8 collision_result;
 u8 update_tiles_in_VDP = false;
+
+u8 scroll_time = 0;
 
 u32 items_table[NUMBER_OF_ROOMS*2] = {0}; 
 
@@ -20,9 +26,8 @@ u16 LEVEL_init(u16 ind) {
 	PAL_setPalette(PAL_MAP, level1_pal.data, DMA);
 	VDP_loadTileSet(&level1_tiles, ind, DMA);
 	map = MAP_create(&level1_map, BG_MAP, TILE_ATTR_FULL(PAL_MAP, FALSE, FALSE, FALSE, ind));
-	
-	MAP_scrollToEx(map, 0, 0, TRUE);
-	// VDP_setScrollingMode(HSCROLL_PLANE, VSCROLL_PLANE);
+
+	MAP_scrollToEx(map, 0, (NUMBER_OF_ROOMS-1)*SCREEN_H, TRUE);
 	
 	LEVEL_generate_screen_collision_map(IDX_WALL_FIRST, IDX_WALL_LAST);
 	
@@ -44,13 +49,22 @@ void LEVEL_generate_screen_collision_map(u8 first_wall, u8 last_wall) {
 	Logo, precisa considerar que os METATILES 16x16 serao separados em 4 tiles e colocados
 	na VRAM continuamento de acordo com as linhas do tileset.
 */
+
+/*
+	Alterando para construir a matriz de colisão do mapa todo,
+	e ir acompanhando a tela conforme o scroll do jogador.
+*/
 	s16 start_x = screen_x/METATILE_W; // find screen top-left cell in map
-	s16 start_y = screen_y/METATILE_W;
+	// s16 start_y = screen_y/METATILE_W;
+	s16 start_y = 0;
 	
 	u8 col_x = 0;
 	u8 col_y = 0;
+	kprintf("x: %d, y: %d", (start_x + SCREEN_METATILES_W), start_y + (SCREEN_METATILES_H * (NUMBER_OF_ROOMS)));
+	// x: 0 -> 320
 	for (u16 x = start_x; x < start_x + SCREEN_METATILES_W; ++x) {
-		for (u16 y = start_y; y < start_y + SCREEN_METATILES_H; ++y) {
+		// y: 0 -> 224 * NUMBER_OF_ROOMS
+		for (u16 y = start_y; y < start_y + (SCREEN_METATILES_H * (NUMBER_OF_ROOMS)); ++y) {
 			u16 tile_index = LEVEL_mapIDX(x*(METATILE_W/8), y*(METATILE_W/8));
 			
 			// kprintf("tile: %d", tile_index);
@@ -104,9 +118,9 @@ void LEVEL_move_and_slide(GameObject* obj) {
 	+---------+  <- right, bottom
 	*/
 	if (obj->speed_x > 0) {				// moving right
-		if (LEVEL_wallXY(obj->box.right, obj->box.top) || 
-	    	LEVEL_wallXY(obj->box.right, obj->box.top + obj->h/2) || 
-			LEVEL_wallXY(obj->box.right, obj->box.bottom-1)) {
+		if (LEVEL_wallXY(obj->box.right, obj->box.top + screen_y) || 
+	    	LEVEL_wallXY(obj->box.right, obj->box.top + screen_y + obj->h/2) || 
+			LEVEL_wallXY(obj->box.right, obj->box.bottom - 1 + screen_y)) {
 				obj->next_x = FIX16(obj->box.right/METATILE_W * METATILE_W - obj->w);
 				collision_result |= COLLISION_RIGHT;
 		}
@@ -120,9 +134,9 @@ void LEVEL_move_and_slide(GameObject* obj) {
 	*/
 	else 
 	if (obj->speed_x < 0) {			// moving left
-		if (LEVEL_wallXY(obj->box.left, obj->box.top) || 
-			LEVEL_wallXY(obj->box.left, obj->box.top + obj->h/2) || 
-			LEVEL_wallXY(obj->box.left, obj->box.bottom-1)) {
+		if (LEVEL_wallXY(obj->box.left, obj->box.top + screen_y) || 
+			LEVEL_wallXY(obj->box.left, obj->box.top + screen_y + obj->h/2) || 
+			LEVEL_wallXY(obj->box.left, obj->box.bottom - 1 + screen_y)) {
 				obj->next_x = FIX16((obj->box.left/METATILE_W + 1) * METATILE_W);
 				collision_result |= COLLISION_LEFT;
 		}
@@ -141,9 +155,9 @@ void LEVEL_move_and_slide(GameObject* obj) {
 	       +---------+ 
 	*/
 	if (obj->speed_y < 0) {        // moving up
-		if (LEVEL_wallXY(obj->box.left,  obj->box.top) || 
-			LEVEL_wallXY(obj->box.left + obj->w/2, obj->box.top) || 
-			LEVEL_wallXY(obj->box.right-1, obj->box.top)) {
+		if (LEVEL_wallXY(obj->box.left,  obj->box.top + screen_y) || 
+			LEVEL_wallXY(obj->box.left + obj->w/2, obj->box.top + screen_y) || 
+			LEVEL_wallXY(obj->box.right-1, obj->box.top + screen_y)) {
 				obj->next_y = FIX16((obj->box.top/METATILE_W + 1) * METATILE_W);
 				collision_result |= COLLISION_TOP;
 		}
@@ -161,9 +175,9 @@ void LEVEL_move_and_slide(GameObject* obj) {
 	*/
 	else
 	if (obj->speed_y > 0) {   // moving down
-		if (LEVEL_wallXY(obj->box.left,  obj->box.bottom) || 
-			LEVEL_wallXY(obj->box.left + obj->w/2, obj->box.bottom) || 
-			LEVEL_wallXY(obj->box.right-1, obj->box.bottom)) {
+		if (LEVEL_wallXY(obj->box.left,  obj->box.bottom + screen_y) || 
+			LEVEL_wallXY(obj->box.left + obj->w/2, obj->box.bottom + screen_y) || 
+			LEVEL_wallXY(obj->box.right-1, obj->box.bottom + screen_y)) {
 				obj->next_y = FIX16((obj->box.bottom/METATILE_W) * METATILE_W - obj->h);
 				collision_result |= COLLISION_BOTTOM;
 		}
@@ -301,24 +315,18 @@ void LEVEL_restore_items(s8 room) {
 	#endif
 }
 
-void LEVEL_scroll_update_collision(s16 offset_x, s16 offset_y) {
+void LEVEL_scroll_update(s16 offset_x, s16 offset_y) {
 	// register items in current room
-	LEVEL_register_items_collected(screen_y/SCREEN_H * 3 + screen_x/SCREEN_W);
+	// LEVEL_register_items_collected(screen_y/SCREEN_H * 3 + screen_x/SCREEN_W);
 	
 	// move to next room and generate collision map
 	screen_x += offset_x;
 	screen_y += offset_y;
+	if(screen_y == 0){
+		screen_y = (NUMBER_OF_ROOMS-1)*SCREEN_H;
+	}
 	MAP_scrollTo(map, screen_x, screen_y);
-	LEVEL_generate_screen_collision_map(0, 5);
 
-	// VDP_waitVBlank(true); ??
-
-	// The MAP_scrollTo() will update the cached VDP map in RAM, 
-	// but the VRAM map will be updated during VBLANK
-	// SYS_doVBlankProcess();
-	
-	// restore items status in new room
-	// LEVEL_restore_items(screen_y/SCREEN_H * 3 + screen_x/SCREEN_W);
 	update_tiles_in_VDP = true;
 
 	#ifdef DEBUG
@@ -327,23 +335,10 @@ void LEVEL_scroll_update_collision(s16 offset_x, s16 offset_y) {
 }
 
 void LEVEL_update_camera(GameObject* obj) {
-	if (obj->x > (FIX16(SCREEN_W) - obj->w/2)) {
-		obj->x = 0;
-		LEVEL_scroll_update_collision(SCREEN_W, 0);
-	} else
-	if (obj->x < (FIX16(-obj->w/2))) {
-		obj->x = FIX16(SCREEN_W - obj->w);
-		LEVEL_scroll_update_collision(-SCREEN_W, 0);
-	}
-	
-	if (obj->y > (FIX16(SCREEN_H) - obj->h/2)) {
-		obj->y = 0;
-		LEVEL_scroll_update_collision(0, SCREEN_H);
-	} else
-	if (obj->y < (FIX16(-obj->h/2))) {
-		obj->y = FIX16(SCREEN_H - obj->h);
-		LEVEL_scroll_update_collision(0, -SCREEN_H);
-	}
+	scroll_time++;
+	// if(scroll_time%2 == 0){
+		LEVEL_scroll_update(0, -SCROLLING_SPEED);
+	// }
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -376,12 +371,12 @@ void LEVEL_draw_tile_map() {
 		for (u8 tile_y = 0; tile_y < SCREEN_METATILES_H; ++tile_y) {
 
 			s16 index = LEVEL_mapIDX(map_offset_x + tile_x*METATILE_W/8, map_offset_y + tile_y*METATILE_W/8);
-				if (index != 10) {
-					intToStr(index, text, 1);
-					VDP_drawText(text, tile_x * METATILE_W/8, tile_y * METATILE_W/8);
-				} else {
-					VDP_drawText("  ", tile_x * METATILE_W/8, tile_y * METATILE_W/8);
-				}
+			if (index != 10) {
+				intToStr(index, text, 1);
+				VDP_drawText(text, tile_x * METATILE_W/8, tile_y * METATILE_W/8);
+			} else {
+				VDP_drawText("  ", tile_x * METATILE_W/8, tile_y * METATILE_W/8);
+			}
 		}
 	}
 }

@@ -22,7 +22,8 @@
         "limits": "c",
         "utils.h": "c",
         "globals.h": "c",
-        "gameobject.h": "c"
+        "gameobject.h": "c",
+        "background.h": "c"
     },
     "gens.path": "C:\\gensKMod_073\\gens.exe"
 }

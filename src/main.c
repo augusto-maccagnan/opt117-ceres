@@ -50,6 +50,8 @@
 #include "level.h"
 #include "hud.h"
 
+// #define DEBUG
+
 // index for tiles in VRAM (first tile reserved for SGDK)
 u16 ind = TILE_USER_INDEX;
 
@@ -66,7 +68,8 @@ GameObject balls[MAX_OBJ];
 void game_init() {
 	VDP_setScreenWidth320();
 	SPR_init();
-	
+	SYS_showFrameLoad(true);
+
 	// init BACKGROUND, LEVEL AND HUD ///////////////////////////////
 
 	#ifdef DEBUG
@@ -76,7 +79,7 @@ void game_init() {
 	ind += HUD_init(ind);
 	#endif
 
-	// ind += LEVEL_init(ind);
+	ind += LEVEL_init(ind);
 	
 	#ifdef DEBUG
 	LEVEL_draw_map();
@@ -108,6 +111,7 @@ static inline void game_update() {
 	#ifndef DEBUG
 	BACKGROUND_update();
 	#endif
+	LEVEL_update_camera(&player);
 }
 
 ////////////////////////////////////////////////////////////////////////////

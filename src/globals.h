@@ -13,7 +13,7 @@ extern char text[5];
 #define HUD_TILES 1
 
 // maximum number of screens (rooms) in a map
-#define NUMBER_OF_ROOMS 9 
+#define NUMBER_OF_ROOMS 14
 
 #define SCREEN_W 320
 #define SCREEN_H 224

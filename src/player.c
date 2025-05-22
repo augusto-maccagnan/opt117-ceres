@@ -46,7 +46,7 @@ void PLAYER_update() {
 	}
 
 	// GAMEOBJECT_wrap_screen(&player);
-	// GAMEOBJECT_clamp_screen(&player);
+	GAMEOBJECT_clamp_screen(&player);
 	
 	// update VDP/SGDK
 	SPR_setPosition(player.sprite, fix16ToInt(player.x), fix16ToInt(player.y));

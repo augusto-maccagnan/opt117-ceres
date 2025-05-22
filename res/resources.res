@@ -5,6 +5,10 @@ SPRITE  spr_ball            "sprites/ball.png"      2 2 FAST 3
 IMAGE   img_background    "backgrounds/background_1.png" BEST
 IMAGE   img_hud           "hud/hud.png" FAST
 
-TILESET level1_tiles      "levels/level1/level1_tiles.png" BEST ALL
-PALETTE level1_pal        "levels/level1/level1_pal.pal"
-MAP     level1_map        "levels/level1/level1_map.tmx" map_layer BEST 0
+# TILESET level1_tiles      "levels/level1/level1_tiles.png" BEST ALL
+# PALETTE level1_pal        "levels/level1/level1_pal.pal"
+# MAP     level1_map        "levels/level1/level1_map.tmx" map_layer BEST 0
+
+TILESET level1_tiles      "levels/ceres-level/ceres_tiles.png" BEST ALL
+PALETTE level1_pal        "levels/ceres-level/level1.pal"
+MAP     level1_map        "levels/ceres-level/level1.tmx" map_layer BEST 0

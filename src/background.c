@@ -15,15 +15,17 @@ u16 BACKGROUND_init(u16 ind) {
 	
 	VDP_setScrollingMode(HSCROLL_TILE , VSCROLL_COLUMN);
 	
-	f16 speed = FIX16(-0.4);
+	f16 speed = FIX16(-0.6);
 	// 5; 4; 3; 2; 1; 0
 	// 19; 18; 17; 16; 15; 14
 	for (u8 i = 5; i < 255; --i) {
 		set_offset_speed(i, 1, speed);
 		set_offset_speed((SCREEN_TILES_W/2)-i-1, 1, speed);
-		speed += FIX16(-0.4);
+		if(!(i%3)) {
+			speed += FIX16(-0.2);
+		}
 	}
-    set_offset_speed(5, 9, FIX16(-0.4));
+    set_offset_speed(5, 9, FIX16(-0.6));
 	
 	return img_background.tileset->numTile;
 }

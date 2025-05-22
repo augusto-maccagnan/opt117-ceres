@@ -8,11 +8,11 @@
 
 #define NUMBER_OF_LEVELS 5
 
-#define IDX_EMPTY 	   10
+#define IDX_EMPTY 	   4
 #define IDX_ITEM  	   8
 #define IDX_ITEM_DONE  80
 #define IDX_WALL_FIRST 0
-#define IDX_WALL_LAST  5
+#define IDX_WALL_LAST  3
 
 #define OFFSCREEN_TILES 3
 
@@ -25,7 +25,7 @@
 #define COLLISION_VERT   0b1100
 
 extern Map* map;
-extern u8 collision_map[SCREEN_METATILES_W + OFFSCREEN_TILES*2][SCREEN_METATILES_H + OFFSCREEN_TILES*2]; // screen collision map
+extern u8 collision_map[SCREEN_METATILES_W + OFFSCREEN_TILES*2][(SCREEN_METATILES_H * (NUMBER_OF_ROOMS)) + OFFSCREEN_TILES*2]; // screen collision map
 
 // screen cell position in map
 extern u16 screen_x;
