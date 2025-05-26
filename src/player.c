@@ -6,7 +6,16 @@
 #include "utils.h"
 #include "hud.h"
 
+#define DEBUG
+
+#define SHOOT_DELAY 10
+#define MAX_SHOTS 10
+#define SHOOT_SPEED 8
+
 GameObject player;
+u8 shoot_timer = 0;
+u8 shoot_count = 0;
+GameObject shots[MAX_SHOTS];
 
 ////////////////////////////////////////////////////////////////////////////
 // INIT
@@ -21,6 +30,10 @@ u16 PLAYER_init(u16 ind) {
 // UPDATE
 
 void PLAYER_update() {
+	shoot_timer++;
+	if(shoot_timer == MAX_U8 - 1){
+		shoot_timer = SHOOT_DELAY + 1;
+	}
 	// input
 	PLAYER_get_input_dir8();
 	
@@ -30,14 +43,9 @@ void PLAYER_update() {
 	
 	LEVEL_move_and_slide(&player);
 	
+	// player movement
 	player.x = player.next_x;
 	player.y = player.next_y;
-	
-	// if (LEVEL_collision_result()) {
-	// 	PAL_setColor(3, RGB24_TO_VDPCOLOR(0xFF0000));
-	// } else {
-	// 	PAL_setColor(3, RGB24_TO_VDPCOLOR(0x00FF00));
-	// }
 	
 	GAMEOBJECT_update_boundbox(player.x, player.y, &player);
 	if (LEVEL_tileXY(player.box.left + player.w/2, player.box.top + player.h/2) == IDX_ITEM) {
@@ -48,6 +56,32 @@ void PLAYER_update() {
 	// GAMEOBJECT_wrap_screen(&player);
 	GAMEOBJECT_clamp_screen(&player);
 	
+	// SHOOT_collision(&player, shots, MAX_SHOTS);
+	#ifdef DEBUG
+	for(int i = 0; i < MAX_SHOTS; i++) {
+		if (shots[i].sprite != NULL) {
+			kprintf("Shot %d: x=%d, y=%d, speed_x=%d, speed_y=%d\n", i, fix16ToInt(shots[i].x),
+				fix16ToInt(shots[i].y), fix16ToInt(shots[i].speed_x), fix16ToInt(shots[i].speed_y));
+		}
+	}
+	#endif
+	// update bullets
+	for(int i = 0; i < MAX_SHOTS; i++) {
+		if (shots[i].sprite != NULL) {
+			shots[i].y = shots[i].y + shots[i].speed_y;
+			// check if bullet is inside screen
+			if(shots[i].x > 0 && shots[i].x < FIX16(SCREEN_W) ||
+			   shots[i].y > 0 && shots[i].y < FIX16(SCREEN_H)) {
+				kprintf("true\n");
+				SPR_setPosition(shots[i].sprite, fix16ToInt(shots[i].x), fix16ToInt(shots[i].y));
+			} else {
+				kprintf("false\n");
+				// SPR_releaseSprite(shots[i].sprite);
+				// shots[i].sprite = NULL;
+				// shoot_count--;
+			}
+		}
+	}
 	// update VDP/SGDK
 	SPR_setPosition(player.sprite, fix16ToInt(player.x), fix16ToInt(player.y));
 	SPR_setAnim(player.sprite, player.anim);
@@ -150,4 +184,37 @@ void PLAYER_get_input_dir8() {
 		player.speed_y = PLAYER_SPEED;
 		player.anim = 6;
 	} 
+
+	if(key_pressed(JOY_1, BUTTON_A)) {
+		//shoot logic here
+
+		// validate minimun delay between shots
+		if(shoot_timer > SHOOT_DELAY) {
+			PLAYER_shoot();
+			shoot_timer = 0;
+		}
+	}
+}
+
+void PLAYER_shoot() {
+	// validate shots array size
+	if (shoot_count < MAX_SHOTS) {
+		// find an empty shot slot
+		for (u8 i = 0; i < MAX_SHOTS; i++) {
+			if (shots[i].sprite == NULL) {
+				shots[i].sprite = SPR_addSprite(&spr_bullet, fix16ToInt(player.x + player.w/2 - 4), fix16ToInt(player.y + player.h/2 - 4), TILE_ATTR(PAL_PLAYER, 0, FALSE, FALSE));
+				shots[i].x = player.x + player.w/2 - 4;
+				shots[i].y = player.y + player.h/2 - 4;
+				shots[i].speed_x = 0;
+				shots[i].speed_y = -FIX16(SHOOT_SPEED); // horizontal shot
+				shots[i].anim = 0; // default animation
+				shoot_count++;
+				break;
+			}
+		}
+	}
+}
+
+void SHOOT_collision(GameObject* player, GameObject* shots, u8 max_shots) {
+	// Check for collisions between player shots and enemies
 }

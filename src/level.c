@@ -17,7 +17,7 @@ u8 update_tiles_in_VDP = false;
 
 u8 scroll_time = 0;
 
-u32 items_table[NUMBER_OF_ROOMS*2] = {0}; 
+u32 items_table[NUMBER_OF_ROOMS*2] = {0};
 
 ////////////////////////////////////////////////////////////////////////////
 // INIT

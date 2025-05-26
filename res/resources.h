@@ -2,7 +2,7 @@
 #define _RES_RESOURCES_H_
 
 extern const SpriteDefinition spr_ship;
-extern const SpriteDefinition spr_ball;
+extern const SpriteDefinition spr_bullet;
 extern const Image img_background;
 extern const Image img_hud;
 extern const TileSet level1_tiles;
