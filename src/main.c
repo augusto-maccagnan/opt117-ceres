@@ -87,7 +87,7 @@ void game_init() {
 	
 	// init GAME OBJECTS ////////////////////////////////////////////
 
-	PLAYER_init(ind);
+	ind += PLAYER_init(ind);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -110,6 +110,8 @@ static inline void game_update() {
 
 	#ifndef DEBUG
 	BACKGROUND_update();
+	#else
+	LEVEL_update_draw();
 	#endif
 	LEVEL_update_camera(&player);
 }

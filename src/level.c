@@ -186,7 +186,7 @@ void LEVEL_move_and_slide(GameObject* obj) {
 
 void LEVEL_remove_tile(s16 x, s16 y, u8 new_index) {
 	// use 8x8 position in 16x16 collision vector
-	LEVEL_set_tileXY(x, y, new_index);
+	LEVEL_set_tileXY(x, y + screen_y, new_index);
 
 	// find the position of the first 8x8 tile corresponding to the 16x16 tile
 	x = (x + screen_x) / METATILE_W * (METATILE_W / 8);
@@ -346,19 +346,22 @@ void LEVEL_update_camera(GameObject* obj) {
 
 void LEVEL_draw_collision_map() {
     VDP_setTextPlane(BG_B);
-
+	VDP_setScrollingMode(HSCROLL_PLANE , VSCROLL_PLANE);
 	for (u8 tile_x = 0; tile_x < SCREEN_METATILES_W; ++tile_x) {
-		for (u8 tile_y = 0; tile_y < SCREEN_METATILES_H; ++tile_y) {
-				
-				s16 index = LEVEL_tileIDX(tile_x, tile_y);
-				if (index != 0) {
-					intToStr(index, text, 1);
-					VDP_drawText(text, tile_x * METATILE_W/8, tile_y * METATILE_W/8);
-				} else {
-					VDP_drawText("  ", tile_x * METATILE_W/8, tile_y * METATILE_W/8);
-				}
+		for (u8 tile_y = SCREEN_METATILES_H * (NUMBER_OF_ROOMS-1); tile_y > 0; --tile_y) {
+			s16 index = LEVEL_tileIDX(tile_x, tile_y);
+			if (index != 0) {
+				intToStr(index, text, 1);
+				VDP_drawText(text, tile_x * METATILE_W/8, tile_y * METATILE_W/8);
+			} else {
+				VDP_drawText("  ", tile_x * METATILE_W/8, tile_y * METATILE_W/8);
+			}
 		}
 	}
+}
+
+void LEVEL_update_draw(){
+	VDP_setVerticalScroll(BG_BACKGROUND, -SCROLLING_SPEED);
 }
 
 void LEVEL_draw_tile_map() {
