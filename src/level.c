@@ -3,33 +3,46 @@
 
 // #define DEBUG
 
+#ifdef DEBUG
 #define SCROLLING_SPEED 1
+#else
+#define SCROLLING_SPEED 1
+#endif
 
 Map* map;
-u8 collision_map[SCREEN_METATILES_W + OFFSCREEN_TILES*2][(SCREEN_METATILES_H * (NUMBER_OF_ROOMS)) + OFFSCREEN_TILES*2] = {0}; // screen collision map
+u8 collision_map[SCREEN_METATILES_W][(SCREEN_METATILES_H * (MAX_ROOMS))] = {0}; // screen collision map
 
 // Top-Left screen position in map
 u16 screen_x = 0;
-u16 screen_y = (NUMBER_OF_ROOMS-1)*SCREEN_H; // 224
+u16 screen_y = (MAX_ROOMS-1)*SCREEN_H;
 
 u8 collision_result;
 u8 update_tiles_in_VDP = false;
 
 u8 scroll_time = 0;
 
-u32 items_table[NUMBER_OF_ROOMS*2] = {0};
+u32 items_table[MAX_ROOMS*2] = {0};
+
+#ifdef DEBUG
+u8 dbg_timer = 0;
+#endif
 
 ////////////////////////////////////////////////////////////////////////////
 // INIT
 
-u16 LEVEL_init(u16 ind) {
+u16 LEVEL_init(u16 ind, u8 rooms) {
+	// set starting Y position based on the number of rooms
+	screen_y = (rooms-1)*SCREEN_H; // 224
+	#ifdef DEBUG
+	kprintf("rooms=%d", rooms);
+	#endif
 	PAL_setPalette(PAL_MAP, level1_pal.data, DMA);
 	VDP_loadTileSet(&level1_tiles, ind, DMA);
 	map = MAP_create(&level1_map, BG_MAP, TILE_ATTR_FULL(PAL_MAP, FALSE, FALSE, FALSE, ind));
 
-	MAP_scrollToEx(map, 0, (NUMBER_OF_ROOMS-1)*SCREEN_H, TRUE);
+	MAP_scrollToEx(map, 0, (rooms-1)*SCREEN_H, TRUE);
 	
-	LEVEL_generate_screen_collision_map(IDX_WALL_FIRST, IDX_WALL_LAST);
+	LEVEL_generate_screen_collision_map(IDX_WALL_FIRST, IDX_WALL_LAST, rooms);
 	
 	ind += level1_tiles.numTile;
 
@@ -42,7 +55,7 @@ u16 LEVEL_init(u16 ind) {
  *   Vazio   -> idx 0
  *   Demais  -> idx original do TMX
  */
-void LEVEL_generate_screen_collision_map(u8 first_wall, u8 last_wall) {
+void LEVEL_generate_screen_collision_map(u8 first_wall, u8 last_wall, u8 rooms) {
 /*
     IMPORTANTE
 	Os indices dos TILES sao os mesmos do tileset, embora os tiles no VDP sejam 8x8.
@@ -54,20 +67,19 @@ void LEVEL_generate_screen_collision_map(u8 first_wall, u8 last_wall) {
 	Alterando para construir a matriz de colisão do mapa todo,
 	e ir acompanhando a tela conforme o scroll do jogador.
 */
-	s16 start_x = screen_x/METATILE_W; // find screen top-left cell in map
+	// s16 start_x = screen_x/METATILE_W;
 	// s16 start_y = screen_y/METATILE_W;
-	s16 start_y = 0;
-	
+	// s16 start_y = 0;
+
 	u8 col_x = 0;
-	u8 col_y = 0;
-	kprintf("x: %d, y: %d", (start_x + SCREEN_METATILES_W), start_y + (SCREEN_METATILES_H * (NUMBER_OF_ROOMS)));
+	// u8 col_y = 0;
+	u16 col_y = 0;
+
 	// x: 0 -> 320
-	for (u16 x = start_x; x < start_x + SCREEN_METATILES_W; ++x) {
+	for (u16 x = 0; x < SCREEN_METATILES_W; ++x) {
 		// y: 0 -> 224 * NUMBER_OF_ROOMS
-		for (u16 y = start_y; y < start_y + (SCREEN_METATILES_H * (NUMBER_OF_ROOMS)); ++y) {
+		for (u16 y = 0; y < (SCREEN_METATILES_H * rooms); ++y) {
 			u16 tile_index = LEVEL_mapIDX(x*(METATILE_W/8), y*(METATILE_W/8));
-			
-			// kprintf("tile: %d", tile_index);
 
 			if (tile_index == IDX_EMPTY) {										// empty -> 0
 				// collision_map[col_x + OFFSCREEN_TILES][col_y + OFFSCREEN_TILES] = 0;
@@ -197,9 +209,6 @@ void LEVEL_remove_tile(s16 x, s16 y, u8 new_index) {
 	VDP_setTileMapXY(BG_MAP, TILE_ATTR_FULL(PAL_MAP, 0, 0, 0, 0), x, y+1);
 	VDP_setTileMapXY(BG_MAP, TILE_ATTR_FULL(PAL_MAP, 0, 0, 0, 0), x+1, y+1);
 
-	#ifdef DEBUG
-	LEVEL_draw_map();
-	#endif
 }
 
 /**
@@ -315,7 +324,7 @@ void LEVEL_restore_items(s8 room) {
 	#endif
 }
 
-void LEVEL_scroll_update(s16 offset_x, s16 offset_y) {
+void LEVEL_scroll_update(s16 offset_x, s16 offset_y, u8 rooms) {
 	// register items in current room
 	// LEVEL_register_items_collected(screen_y/SCREEN_H * 3 + screen_x/SCREEN_W);
 	
@@ -323,63 +332,62 @@ void LEVEL_scroll_update(s16 offset_x, s16 offset_y) {
 	screen_x += offset_x;
 	screen_y += offset_y;
 	if(screen_y == 0){
-		screen_y = (NUMBER_OF_ROOMS-1)*SCREEN_H;
+		screen_y = (rooms-1)*SCREEN_H;
 	}
 	MAP_scrollTo(map, screen_x, screen_y);
 
 	update_tiles_in_VDP = true;
 
 	#ifdef DEBUG
-	LEVEL_draw_map();
+	LEVEL_draw_map(rooms);
 	#endif
 }
 
-void LEVEL_update_camera(GameObject* obj) {
+void LEVEL_update_camera(GameObject* obj, u8 rooms) {
 	scroll_time++;
 	// if(scroll_time%2 == 0){
-		LEVEL_scroll_update(0, -SCROLLING_SPEED);
+		LEVEL_scroll_update(0, -SCROLLING_SPEED, rooms);
 	// }
 }
 
 ////////////////////////////////////////////////////////////////////////////
 // DRAWING AND FX
-
-void LEVEL_draw_collision_map() {
+#ifdef DEBUG
+void LEVEL_draw_collision_map(u8 rooms) {
     VDP_setTextPlane(BG_B);
 	VDP_setScrollingMode(HSCROLL_PLANE , VSCROLL_PLANE);
-	for (u8 tile_x = 0; tile_x < SCREEN_METATILES_W; ++tile_x) {
-		for (u8 tile_y = SCREEN_METATILES_H * (NUMBER_OF_ROOMS-1); tile_y > 0; --tile_y) {
-			s16 index = LEVEL_tileIDX(tile_x, tile_y);
-			if (index != 0) {
-				intToStr(index, text, 1);
-				VDP_drawText(text, tile_x * METATILE_W/8, tile_y * METATILE_W/8);
-			} else {
-				VDP_drawText("  ", tile_x * METATILE_W/8, tile_y * METATILE_W/8);
+	dbg_timer++;
+	char row[SCREEN_METATILES_H+1];
+	// kprintf("init_x=%d, x=%d, init_y=%d, y=%d", 0, screen_x, screen_y, );
+/* INITIAL Y TILE INDEX
+	should be
+	initial tile_y = SCREEN_METATILES_H = 14
+	to final tile_y = 0
+*/
+/* The collision matrix starts from the bottom of the map,
+	so to get the tile index we need to offset the 
+	number_of_rooms * SCREEN_METATILES_H - 
+	current screen_y metatile: screeen_y/16
+	So to get the index of the tile
+	we need to get
+	number_of_rooms * SCREEN_METATILES_H - screen_y/16
+
+
+*/
+	if(!(dbg_timer % 30)){
+		dbg_timer = 0;
+		u8 offset = 0;
+		for (u8 tile_x = 0; tile_x < SCREEN_METATILES_W; ++tile_x) {
+			for (u8 tile_y = SCREEN_METATILES_H; tile_y > 0; --tile_y) {
+				s16 index = LEVEL_tileIDX(tile_x, tile_y + screen_y/16 - (SCREEN_METATILES_H * offset));
+				if (index != 0) {
+					intToStr(index, text, 1);
+					VDP_drawText(text, tile_x * METATILE_W/8, tile_y * METATILE_W/8);
+				} else {
+					VDP_drawText("  ", tile_x * METATILE_W/8, tile_y * METATILE_W/8);
+				}
 			}
 		}
 	}
 }
-
-void LEVEL_update_draw(){
-	VDP_setVerticalScroll(BG_BACKGROUND, -SCROLLING_SPEED);
-}
-
-void LEVEL_draw_tile_map() {
-    VDP_setTextPlane(BG_B);
-
-	u16 map_offset_x = screen_x / 8;
-	u16 map_offset_y = screen_y / 8;
-
-	for (u8 tile_x = 0; tile_x < SCREEN_METATILES_W; ++tile_x) {
-		for (u8 tile_y = 0; tile_y < SCREEN_METATILES_H; ++tile_y) {
-
-			s16 index = LEVEL_mapIDX(map_offset_x + tile_x*METATILE_W/8, map_offset_y + tile_y*METATILE_W/8);
-			if (index != 10) {
-				intToStr(index, text, 1);
-				VDP_drawText(text, tile_x * METATILE_W/8, tile_y * METATILE_W/8);
-			} else {
-				VDP_drawText("  ", tile_x * METATILE_W/8, tile_y * METATILE_W/8);
-			}
-		}
-	}
-}
+#endif

@@ -12,3 +12,4 @@ IMAGE   img_hud           "hud/hud.png" FAST
 TILESET level1_tiles      "levels/ceres-level/ceres_tiles.png" BEST ALL
 PALETTE level1_pal        "levels/ceres-level/level1.pal"
 MAP     level1_map        "levels/ceres-level/level1.tmx" map_layer BEST 0
+# MAP     level1_map        "levels/ceres-level/debug.tmx" map_layer BEST 0

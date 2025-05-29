@@ -36,6 +36,17 @@
  * 
  * TODO
  * ------------------------------ 
+ * [  ] Chance de inimigos droparem power-ups
+ * [  ] Power-ups
+ * [  ] Inteligencia dos Inimigos
+ * [  ] Spawn de inimigos
+ * [  ] Corrigir sprite da nave
+ * [OK] Contabilizar bloco destruido
+ * [OK] Debug da colisão do level seguir o scroll
+ * [OK] Colisão do tiro com blocos
+ * [OK] Tiro da nave
+ * [OK] Fazer verificação da colisão com o scroll do tilemap do LEVEL
+ * [OK] Gerar mapa de colisão do level inteiro
  */
 #include <genesis.h>
 #include <sprite_eng.h>
@@ -50,22 +61,24 @@
 #include "level.h"
 #include "hud.h"
 
+
+// IF DEBUGGING  CHANGE MAP IN resources.res to DEBUG MAP
 // #define DEBUG
 
 // index for tiles in VRAM (first tile reserved for SGDK)
 u16 ind = TILE_USER_INDEX;
 
-// glow color effect
-// u8 bg_colors_delay = 5;
-// const u16 const bg_color_glow[] = {0x0, 0x222, 0x444, 0x666, 0x888};
-
-#define MAX_OBJ 1
-GameObject balls[MAX_OBJ];
+enum NUMBER_OF_ROOMS level_rooms;
 
 ////////////////////////////////////////////////////////////////////////////
 // GAME INIT
 
 void game_init() {
+	#ifndef DEBUG
+	level_rooms = LEVEL1;
+	#else
+	level_rooms = DBG;
+	#endif
 	VDP_setScreenWidth320();
 	SPR_init();
 	SYS_showFrameLoad(true);
@@ -79,10 +92,10 @@ void game_init() {
 	ind += HUD_init(ind);
 	#endif
 
-	ind += LEVEL_init(ind);
+	ind += LEVEL_init(ind, level_rooms);
 	
 	#ifdef DEBUG
-	LEVEL_draw_map();
+	LEVEL_draw_map(level_rooms);
 	#endif
 	
 	// init GAME OBJECTS ////////////////////////////////////////////
@@ -110,10 +123,8 @@ static inline void game_update() {
 
 	#ifndef DEBUG
 	BACKGROUND_update();
-	#else
-	LEVEL_update_draw();
 	#endif
-	LEVEL_update_camera(&player);
+	LEVEL_update_camera(&player, level_rooms);
 }
 
 ////////////////////////////////////////////////////////////////////////////

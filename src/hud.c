@@ -1,6 +1,6 @@
 #include "hud.h"
 
-u8 player_gems;
+u16 player_score;
 
 u16 HUD_init(u16 ind) {
 	VDP_setTextPlane(WINDOW);
@@ -18,8 +18,8 @@ u16 HUD_init(u16 ind) {
 	VDP_drawImageEx(WINDOW, &img_hud, TILE_ATTR_FULL(PAL_BACKGROUND, 1, 0, 0, ind), 0, 0, FALSE, DMA);
 	ind += img_hud.tileset->numTile;
 	
-	VDP_drawText("ENERGY ----------   GEMS 255", 1, 0);
-	HUD_gem_collected(0);
+	VDP_drawText("HEALTH ----------  SCORE 1337  UP ----", 1, 0);
+	HUD_score(0);
 
     return ind;
 }
@@ -32,13 +32,13 @@ void HUD_update_health(u8 value) {
 	VDP_drawText(health, 7, 0);
 }
 
-void HUD_gem_collected(u8 value) {
-	player_gems += value;
-	HUD_update_gems();
+void HUD_score(u8 value) {
+	player_score += value;
+	HUD_update_score();
 }
 
-void HUD_update_gems() {
-	char gems[5];
-	intToStr(player_gems, gems, 3);
-	VDP_drawText(gems, 26, 0);
+void HUD_update_score() {
+	char score[5];
+	intToStr(player_score, score, 4);
+	VDP_drawText(score, 26, 0);
 }

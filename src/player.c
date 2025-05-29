@@ -9,7 +9,7 @@
 // #define DEBUG
 
 #define SHOOT_DELAY 10
-#define MAX_SHOTS 10
+#define MAX_SHOTS 15
 #define SHOOT_SPEED 8
 
 GameObject player;
@@ -21,10 +21,10 @@ GameObject shots[MAX_SHOTS];
 // INIT
 
 u16 PLAYER_init(u16 ind) {
-	ind += GAMEOBJECT_init(&player, &spr_ship, SCREEN_W/2-12, SCREEN_H/2-12, PAL_PLAYER, ind);
+	ind += GAMEOBJECT_init(&player, &spr_ship, SCREEN_W/2-12, SCREEN_H/2-12, -16, -16, PAL_PLAYER, ind);
 	for(u8 i = 0; i < MAX_SHOTS; ++i){
-		// ind += GAMEOBJECT_init(&shots[i], &spr_bullet, 0, 0, PAL_PLAYER, ind);
-		shots[i].sprite = SPR_addSprite(&spr_bullet, 0, 0, TILE_ATTR_FULL(PAL_PLAYER, FALSE, FALSE, 0, ind));
+		ind += GAMEOBJECT_init(&shots[i], &spr_bullet, 0, 0, -8, -8, PAL_PLAYER, ind);
+		// shots[i].sprite = SPR_addSprite(&spr_bullet, 0, 0, TILE_ATTR_FULL(PAL_PLAYER, FALSE, FALSE, 0, ind));
 		ind += shots[i].sprite->definition->maxNumTile;
 		shots[i].sprite->data = 0;
 	}
@@ -55,7 +55,7 @@ void PLAYER_update() {
 	
 	GAMEOBJECT_update_boundbox(player.x, player.y, &player);
 	if (LEVEL_tileXY(player.box.left + player.w/2, player.box.top + player.h/2) == IDX_ITEM) {
-		HUD_gem_collected(1);
+		HUD_score(1);
 		LEVEL_remove_tile(player.box.left + player.w/2, player.box.top + player.h/2, IDX_ITEM_DONE);
 	}
 
@@ -205,6 +205,9 @@ void SHOTS_update() {
 		if(shots[i].sprite->data == 1){
 			shots[i].next_x = shots[i].x + shots[i].speed_x;
 			shots[i].next_y = shots[i].y + shots[i].speed_y;
+			// shots[i].next_x = shots[i].x;
+			// shots[i].next_y = shots[i].y;
+
 			SPR_setPosition(shots[i].sprite, fix16ToInt(shots[i].x), fix16ToInt(shots[i].y));
 			// check if bullet is outside the screen
 			if(!(shots[i].y > 0 && shots[i].y < FIX16(SCREEN_H))){
@@ -216,6 +219,8 @@ void SHOTS_update() {
 				SHOOT_collision(&shots[i]);
 				shots[i].x = shots[i].next_x;
 				shots[i].y = shots[i].next_y;
+				// shots[i].x = shots[i].next_x + shots[i].speed_x;
+				// shots[i].y = shots[i].next_y + shots[i].speed_y;
 			}
 		}
 	}
@@ -230,8 +235,48 @@ void SHOOT_collision(GameObject* shot) {
 		SPR_setVisibility(shot->sprite, HIDDEN);
 		shot->sprite->data = 0;
 		shoot_count--;
-		// remove the tile
+		#ifdef DEBUG
+		char row[SCREEN_W + 1];
+		for(int i = 0; i < SCREEN_METATILES_W; i++) {
+			row[i] = LEVEL_wallXY(i*16, shot->box.top - 16) ? '1' : '0';
+		}
+		row[SCREEN_METATILES_W] = '\0';
+		kprintf("row: %s", row);
+		for(int i = 0; i < SCREEN_METATILES_W; i++) {
+			row[i] = LEVEL_wallXY(i*16, shot->box.top) ? '1' : '0';
+		}
+		row[SCREEN_METATILES_W] = '\0';
+		kprintf("row: %s", row);
+		for(int i = 0; i < SCREEN_METATILES_W; i++) {
+			row[i] = LEVEL_wallXY(i*16, shot->box.top + 16) ? '1' : '0';
+		}
+		row[SCREEN_METATILES_W] = '\0';
+		kprintf("row: %s", row);
+		#endif
+		// // SEARCH tiles to left, right, bottom or top of the shot
+		// if(LEVEL_wallXY(shot->box.left + shot->w/2, shot->box.top + shot->h/2)) {
+		// 	// center tile
+		// 	tile_x = shot->box.left + shot->w/2;
+		// 	tile_y = shot->box.top + shot->h/2;
+		// } else if(LEVEL_wallXY(shot->box.left, shot->box.top - 16)) {
+		// 	// above
+		// 	tile_x = shot->box.left;
+		// 	tile_y = shot->box.top - 2;
+		// } else if(LEVEL_wallXY(shot->box.right, shot->box.top + 16)){
+		// 	// bellow
+		// 	tile_x = shot->box.left;
+		// 	tile_y = shot->box.top + 2;
+		// }
+		// //DBG
+		// if(LEVEL_tileXY(tile_x, tile_y) != 1) {
+		// 	kprintf("tile not found at x=%d y=%d", tile_x, tile_y);
+		// 	return;
+		// }
+		// remove next wall tile
 		LEVEL_remove_tile(shot->box.left + shot->w/2, shot->box.top + shot->h/2, 0);
+		// increase score
+		enum ENEMY_SCORE score = ASTEROID;
+		HUD_score(score);
 	};
 	// check collision with enemies
 }

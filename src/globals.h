@@ -13,7 +13,21 @@ extern char text[5];
 #define HUD_TILES 1
 
 // maximum number of screens (rooms) in a map
-#define NUMBER_OF_ROOMS 14
+enum NUMBER_OF_ROOMS {
+    LEVEL1 = 30,
+    LEVEL2 = 30,
+    LEVEL3 = 40,
+    LEVEL4 = 50,
+    DBG = 14
+};
+
+enum ENEMY_SCORE {
+    ASTEROID = 5,
+    UFO = 10,
+    SPACESHIP = 15
+};
+
+#define MAX_ROOMS 50
 
 #define SCREEN_W 320
 #define SCREEN_H 224
