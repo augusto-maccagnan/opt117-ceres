@@ -41,6 +41,9 @@
  * [  ] Inteligencia dos Inimigos
  * [  ] Spawn de inimigos
  * [  ] Corrigir sprite da nave
+ * [  ] Tela de Level Finalizado
+ * [  ] Tela de Game Over
+ * [  ] Contabilizar dano no player
  * [OK] Contabilizar bloco destruido
  * [OK] Debug da colisão do level seguir o scroll
  * [OK] Colisão do tiro com blocos
