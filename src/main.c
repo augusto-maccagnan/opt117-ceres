@@ -43,7 +43,9 @@
  * [  ] Corrigir sprite da nave
  * [TS] BUG - Colisão do tiro falha as vezes
  * [  ] Tela de Level Clear
- * [  ] Contabilizar dano no player
+ * [WIP] Arrumar colisão quando player está movendo lateralmente (nave em um y superior ao tile de colisão)
+ * [OK] Contabilizar dano no player -> Problema com a remoção de tiles do mapa
+ * [OK] Tempo de imunidade do player
  * [OK] Tela de Game Over
  * [OK] Colisão com asteroides
  * [OK] Contabilizar bloco destruido

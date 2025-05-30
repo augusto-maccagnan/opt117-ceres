@@ -12,11 +12,15 @@
 #define SHOOT_DELAY 10
 #define MAX_SHOTS 15
 #define SHOOT_SPEED 8
+#define IMMUNITY_TIME 15
 
 GameObject player;
 u8 shoot_timer = 0;
 u8 shoot_count = 0;
 GameObject shots[MAX_SHOTS];
+// handle player immunity
+bool immunity = false;
+u8 immunity_time = 0;
 
 ////////////////////////////////////////////////////////////////////////////
 // INIT
@@ -53,6 +57,7 @@ void PLAYER_update() {
 	
 	// check collision with level tiles
 	PLAYER_collision();
+	PLAYER_immunity_update();
 
 	// player movement
 	player.x = player.next_x;
@@ -180,25 +185,73 @@ void PLAYER_get_input_dir8() {
 void PLAYER_collision() {
 	LEVEL_collision(&player);
 	// check collision with level tiles
+	#ifdef DEBUG
+	if(LEVEL_collision_result()){
+		kprintf("player x=%d y=%d w=%d h=%d", fix16ToInt(player.x), fix16ToInt(player.y), player.w, player.h);
+		kprintf("player_hitbox top=%d bottom=%d left=%d right=%d", player.box.top, player.box.bottom, player.box.left, player.box.right);
+		DEBUG_collision_map(player.box.left + player.w/2, player.box.top - player.h/2);
+	}
+	#endif
 	if (LEVEL_collision_result() & COLLISION_TOP) {
+		#ifdef DEBUG
+		kprintf("top col rmv mt_x=%d mt_y=%d", (player.box.left + player.w/2)/16, (player.box.top - 8)/16);
+		#endif
 		LEVEL_remove_tile(player.box.left + player.w/2 - 4, player.box.top - 8, 0);
 		LEVEL_remove_tile(player.box.left + player.w/2 + 4, player.box.top - 8, 0);
 		// add player damage
-	}
-	if (LEVEL_collision_result() & COLLISION_BOTTOM) {
+		PLAYER_damage(1);
+	} else	if (LEVEL_collision_result() & COLLISION_BOTTOM) {
+		#ifdef DEBUG
+		kprintf("bottom col rmv mt_x=%d mt_y=%d", (player.box.left + player.w/2)/16, (player.box.bottom + 8)/16);
+		#endif
 		LEVEL_remove_tile(player.box.left + player.w/2 - 4, player.box.bottom + 8, 0);
 		LEVEL_remove_tile(player.box.left + player.w/2 + 4, player.box.bottom + 8, 0);
 		// add player damage
-	}
-	if (LEVEL_collision_result() & COLLISION_LEFT) {
+		PLAYER_damage(1);
+	} else	if (LEVEL_collision_result() & COLLISION_LEFT) {
+		#ifdef DEBUG
+		kprintf("left col rmv mt_x=%d mt_y=%d", (player.box.left - 8)/16, (player.box.top + player.h/2)/16);
+		#endif
 		LEVEL_remove_tile(player.box.left - 8, player.box.top + player.h/2 -4, 0);
 		LEVEL_remove_tile(player.box.left - 8, player.box.top + player.h/2 +4, 0);
 		// add player damage
-	}
-	if (LEVEL_collision_result() & COLLISION_RIGHT) {
-		LEVEL_remove_tile(player.box.right + 8, player.box.top + player.h/2 -4, 0);
-		LEVEL_remove_tile(player.box.right + 8, player.box.top + player.h/2 +4, 0);
+		PLAYER_damage(1);
+	} else	if (LEVEL_collision_result() & COLLISION_RIGHT) {
+		#ifdef DEBUG
+		kprintf("right col rmv mt_x=%d mt_y=%d", (player.box.right + 8)/16, (player.box.top + player.h/2)/16);
+		#endif
+		LEVEL_remove_tile(player.box.right + 8, player.box.top + player.h/4, 0);
+		LEVEL_remove_tile(player.box.right + 8, player.box.bottom + player.h/4, 0);
 		// add player damage
+		PLAYER_damage(1);
+	}
+}
+
+void PLAYER_damage(u8 damage) {
+	#ifdef DEBUG
+	kprintf("health=%d damage=%d immunity=%d", player.health, damage, immunity);
+	#endif
+	if(immunity) {
+		// player is immune, do not apply damage
+		return;
+	}
+
+	player.health -= damage;
+	HUD_update_health(player.health);
+	if (player.health <= 0) {
+		player.health = 0;
+		game_state = GAME_OVER;
+	}
+	immunity = true;
+	immunity_time = IMMUNITY_TIME;
+}
+
+void PLAYER_immunity_update() {
+	if(immunity) {
+		if(immunity_time == 0) {
+			immunity = false;
+		}
+		--immunity_time;
 	}
 }
 
@@ -286,8 +339,30 @@ void SHOOT_collision(GameObject* shot) {
 		}
 		LEVEL_remove_tile(tile_x, tile_y, 0);
 		// increase score
-		enum ENEMY_SCORE score = ASTEROID;
-		HUD_score(score);
+		HUD_score(ASTEROID);
 	};
 	// check collision with enemies
+}
+
+void DEBUG_collision_map(s16 x, s16 y) {
+	// print the collision map for debugging
+	// row 1
+	char row[SCREEN_METATILES_W + 1] = "";
+	for(int i = 0; i < SCREEN_METATILES_W; i++) {
+		row[i] = '0' + LEVEL_tileXY(i*16, y - 16 + screen_y);
+	}
+	row[SCREEN_METATILES_W] = '\0';
+	kprintf("y=%d row: %s", (y - 16)/16, row);
+	// row 2
+	for(int i = 0; i < SCREEN_METATILES_W; i++) {
+		row[i] = '0' + LEVEL_tileXY(i*16, y + screen_y);
+	}
+	row[SCREEN_METATILES_W] = '\0';
+	kprintf("y=%d row: %s", y/16, row);
+	// row 3
+	for(int i = 0; i < SCREEN_METATILES_W; i++) {
+		row[i] = '0' + LEVEL_tileXY(i*16, y +16 + screen_y);
+	}
+	row[SCREEN_METATILES_W] = '\0';
+	kprintf("y=%d row: %s", (y + 16)/16, row);
 }

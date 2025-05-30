@@ -18,7 +18,7 @@ u16 HUD_init(u16 ind) {
 	VDP_drawImageEx(WINDOW, &img_hud, TILE_ATTR_FULL(PAL_BACKGROUND, 1, 0, 0, ind), 0, 0, FALSE, DMA);
 	ind += img_hud.tileset->numTile;
 	
-	VDP_drawText("HEALTH ----------  SCORE 1337  UP ----", 1, 0);
+	VDP_drawText("HEALTH|----------|  SCORE 1337 UP ----", 1, 0);
 	HUD_score(0);
 
     return ind;
@@ -27,9 +27,9 @@ u16 HUD_init(u16 ind) {
 void HUD_update_health(u8 value) {
 	char health[PLAYER_MAX_HEALTH+1] = "          ";
 	for (u8 i = 0; i < value; i++) {
-		health[i] = '|';
+		health[i] = '-';
 	}
-	VDP_drawText(health, 7, 0);
+	VDP_drawText(health, 8, 0);
 }
 
 void HUD_score(u8 value) {
@@ -40,5 +40,5 @@ void HUD_score(u8 value) {
 void HUD_update_score() {
 	char score[5];
 	intToStr(player_score, score, 4);
-	VDP_drawText(score, 26, 0);
+	VDP_drawText(score, 27, 0);
 }

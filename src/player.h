@@ -30,10 +30,15 @@ void PLAYER_get_input_dir4();
 * HAS TO BE CALLED AFTER LEVEL_move_and_slide()!
 */
 void PLAYER_collision();
+void PLAYER_damage(u8 damage);
+void PLAYER_immunity_update();
 
 // Shooting logic
 void PLAYER_shoot();
 void SHOTS_update();
 void SHOOT_collision(GameObject* shot);
+
+//DEBUGGING
+void DEBUG_collision_map(s16 x, s16 y);
 
 #endif // _PLAYER_H_

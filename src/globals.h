@@ -27,12 +27,12 @@ enum ENEMY_SCORE {
     SPACESHIP = 15
 };
 
-enum GAME_STATE {
+extern enum GAME_STATE {
     GAME_INIT,
     GAME_PLAYING,
     GAME_OVER,
     GAME_CLEAR
-};
+} game_state;
 
 #define MAX_ROOMS 50
 

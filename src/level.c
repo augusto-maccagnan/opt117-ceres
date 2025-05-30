@@ -218,15 +218,22 @@ void LEVEL_collision(GameObject* obj) {
 
 	GAMEOBJECT_update_boundbox(obj->next_x, obj->next_y, obj);
 	
-	if (LEVEL_wallXY(obj->box.left,  obj->box.top + screen_y) || 
-		LEVEL_wallXY(obj->box.left + obj->w/2, obj->box.top + screen_y) || 
-		LEVEL_wallXY(obj->box.right-1, obj->box.top + screen_y)) {
-			collision_result |= COLLISION_TOP;
-	}
-	if (LEVEL_wallXY(obj->box.left,  obj->box.bottom + screen_y) || 
+	if(obj->speed_y > 0){ // moving down
+		if (LEVEL_wallXY(obj->box.left,  obj->box.bottom + screen_y) || 
 		LEVEL_wallXY(obj->box.left + obj->w/2, obj->box.bottom + screen_y) || 
 		LEVEL_wallXY(obj->box.right-1, obj->box.bottom + screen_y)) {
 			collision_result |= COLLISION_BOTTOM;
+		}
+	} else if(obj->speed_y < 0) { // moving up
+		if (LEVEL_wallXY(obj->box.left,  obj->box.top + screen_y) || 
+			LEVEL_wallXY(obj->box.left + obj->w/2, obj->box.top + screen_y) || 
+			LEVEL_wallXY(obj->box.right-1, obj->box.top + screen_y)) {
+				collision_result |= COLLISION_TOP;
+		}
+	} else {
+		if (LEVEL_wallXY(obj->box.left + obj->w/2, obj->box.top + screen_y)){
+				collision_result |= COLLISION_TOP;
+		}
 	}
 }
 
@@ -367,6 +374,8 @@ void LEVEL_scroll_update(s16 offset_x, s16 offset_y, u8 rooms) {
 	screen_y += offset_y;
 	if(screen_y == 0){
 		screen_y = (rooms-1)*SCREEN_H;
+		// next level logic
+		// game_state = GAME_CLEAR;
 	}
 	MAP_scrollTo(map, screen_x, screen_y);
 
