@@ -18,13 +18,20 @@ enum NUMBER_OF_ROOMS {
     LEVEL2 = 30,
     LEVEL3 = 40,
     LEVEL4 = 50,
-    DBG = 14
+    DBG = 30
 };
 
 enum ENEMY_SCORE {
     ASTEROID = 5,
     UFO = 10,
     SPACESHIP = 15
+};
+
+enum GAME_STATE {
+    GAME_INIT,
+    GAME_PLAYING,
+    GAME_OVER,
+    GAME_CLEAR
 };
 
 #define MAX_ROOMS 50
@@ -65,7 +72,7 @@ enum ENEMY_SCORE {
 
 // GENERAL PLAYER CONFIG ////////////////////////////////
 
-#define PLAYER_SPEED   FIX16(2)
+#define PLAYER_SPEED   FIX16(3)
 #define PLAYER_SPEED45 FIX16(0.707 * 2)
 
 #define PLAYER_MAX_HEALTH 10

@@ -25,6 +25,12 @@ void PLAYER_update();
 void PLAYER_get_input_dir8();
 void PLAYER_get_input_dir4();
 
+/*
+* Checks collision with level tiles.
+* HAS TO BE CALLED AFTER LEVEL_move_and_slide()!
+*/
+void PLAYER_collision();
+
 // Shooting logic
 void PLAYER_shoot();
 void SHOTS_update();

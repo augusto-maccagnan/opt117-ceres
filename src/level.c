@@ -196,6 +196,40 @@ void LEVEL_move_and_slide(GameObject* obj) {
     }
 }
 
+void LEVEL_collision(GameObject* obj) {
+	collision_result = 0;
+	GAMEOBJECT_update_boundbox(obj->next_x, obj->y, obj);
+
+	if (obj->speed_x > 0) {	// moving right
+		if (LEVEL_wallXY(obj->box.right, obj->box.top + screen_y) || 
+	    	LEVEL_wallXY(obj->box.right, obj->box.top + screen_y + obj->h/2) || 
+			LEVEL_wallXY(obj->box.right, obj->box.bottom - 1 + screen_y)) {
+				collision_result |= COLLISION_RIGHT;
+		}
+	}
+	else
+	if (obj->speed_x < 0) { // moving left
+		if (LEVEL_wallXY(obj->box.left, obj->box.top + screen_y) || 
+			LEVEL_wallXY(obj->box.left, obj->box.top + screen_y + obj->h/2) || 
+			LEVEL_wallXY(obj->box.left, obj->box.bottom - 1 + screen_y)) {
+				collision_result |= COLLISION_LEFT;
+		}
+	}
+
+	GAMEOBJECT_update_boundbox(obj->next_x, obj->next_y, obj);
+	
+	if (LEVEL_wallXY(obj->box.left,  obj->box.top + screen_y) || 
+		LEVEL_wallXY(obj->box.left + obj->w/2, obj->box.top + screen_y) || 
+		LEVEL_wallXY(obj->box.right-1, obj->box.top + screen_y)) {
+			collision_result |= COLLISION_TOP;
+	}
+	if (LEVEL_wallXY(obj->box.left,  obj->box.bottom + screen_y) || 
+		LEVEL_wallXY(obj->box.left + obj->w/2, obj->box.bottom + screen_y) || 
+		LEVEL_wallXY(obj->box.right-1, obj->box.bottom + screen_y)) {
+			collision_result |= COLLISION_BOTTOM;
+	}
+}
+
 void LEVEL_remove_tile(s16 x, s16 y, u8 new_index) {
 	// use 8x8 position in 16x16 collision vector
 	LEVEL_set_tileXY(x, y + screen_y, new_index);

@@ -41,9 +41,11 @@
  * [  ] Inteligencia dos Inimigos
  * [  ] Spawn de inimigos
  * [  ] Corrigir sprite da nave
- * [  ] Tela de Level Finalizado
- * [  ] Tela de Game Over
+ * [TS] BUG - Colisão do tiro falha as vezes
+ * [  ] Tela de Level Clear
  * [  ] Contabilizar dano no player
+ * [OK] Tela de Game Over
+ * [OK] Colisão com asteroides
  * [OK] Contabilizar bloco destruido
  * [OK] Debug da colisão do level seguir o scroll
  * [OK] Colisão do tiro com blocos
@@ -63,6 +65,7 @@
 #include "background.h"
 #include "level.h"
 #include "hud.h"
+#include "screen.h"
 
 
 // IF DEBUGGING  CHANGE MAP IN resources.res to DEBUG MAP
@@ -72,14 +75,30 @@
 u16 ind = TILE_USER_INDEX;
 
 enum NUMBER_OF_ROOMS level_rooms;
+enum GAME_STATE game_state;
 
 ////////////////////////////////////////////////////////////////////////////
 // GAME INIT
 
-void game_init() {
-	#ifndef DEBUG
+void init_state() {
+	// reset index for tiles in VRAM
+	ind = TILE_USER_INDEX; 
+
+	// reset score
+	player_score = 0;
+
+	// reset game state
+	game_state = GAME_INIT;
+
+	// reset level rooms
 	level_rooms = LEVEL1;
-	#else
+}
+
+
+void game_init() {
+	init_state();
+
+	#ifdef DEBUG
 	level_rooms = DBG;
 	#endif
 	VDP_setScreenWidth320();
@@ -127,6 +146,7 @@ static inline void game_update() {
 	#ifndef DEBUG
 	BACKGROUND_update();
 	#endif
+
 	LEVEL_update_camera(&player, level_rooms);
 }
 
@@ -139,13 +159,25 @@ int main(bool resetType) {
 		SYS_hardReset();
 	}
 	SYS_showFrameLoad(true);
-	game_init();
 	
 	SYS_doVBlankProcess();
 	
 	while (true) {
-		game_update();
-
+		switch (game_state) {
+		case GAME_INIT:
+			game_init();
+			game_state = GAME_PLAYING;
+			break;
+		case GAME_OVER:
+				SCREEN_over_update();
+				game_state = GAME_INIT;
+				break;
+		case GAME_PLAYING:
+			game_update();
+			break;
+		case GAME_CLEAR:
+			break;
+		}	
 		SPR_update();
 		SYS_doVBlankProcess();
 

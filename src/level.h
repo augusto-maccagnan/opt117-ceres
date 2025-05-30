@@ -82,6 +82,7 @@ inline void LEVEL_set_tileIDX(s16 x, s16 y, u8 value) {
 
 u8 LEVEL_check_wall(GameObject* obj);
 void LEVEL_move_and_slide(GameObject* obj);
+void LEVEL_collision(GameObject* obj);
 
 void LEVEL_remove_tile(s16 x, s16 y, u8 new_tile);
 void LEVEL_register_items_collected(s8 room);
