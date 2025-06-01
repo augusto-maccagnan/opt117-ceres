@@ -1,7 +1,8 @@
 # SPRITE  spr_ball            "sprites/ball.png"      2 2 FAST 3
 
 # Player Resources
-SPRITE  spr_ship            "sprites/ship-bounds.png"      3 3 FAST 3
+SPRITE  spr_ship            "sprites/ship_new.png"      3 3 FAST 3
+# SPRITE  spr_ship            "sprites/ship_bound_new.png"      3 3 FAST 3
 SPRITE  spr_bullet          "sprites/bullet.png"    1 1 FAST 3
 
 # Hud and Background Resources
