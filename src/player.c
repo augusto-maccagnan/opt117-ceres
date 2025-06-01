@@ -212,16 +212,18 @@ void PLAYER_collision() {
 		#ifdef DEBUG
 		kprintf("left col rmv mt_x=%d mt_y=%d", (player.box.left - 8)/16, (player.box.top + player.h/2)/16);
 		#endif
-		LEVEL_remove_tile(player.box.left - 8, player.box.top + player.h/2 -4, 0);
-		LEVEL_remove_tile(player.box.left - 8, player.box.top + player.h/2 +4, 0);
+		LEVEL_remove_tile(player.box.left - 8, player.box.top + player.h/2 -8, 0);
+		LEVEL_remove_tile(player.box.right + 8, player.box.top + player.h/2, 0);
+		LEVEL_remove_tile(player.box.left - 8, player.box.top + player.h/2 +8, 0);
 		// add player damage
 		PLAYER_damage(1);
 	} else	if (LEVEL_collision_result() & COLLISION_RIGHT) {
 		#ifdef DEBUG
 		kprintf("right col rmv mt_x=%d mt_y=%d", (player.box.right + 8)/16, (player.box.top + player.h/2)/16);
 		#endif
-		LEVEL_remove_tile(player.box.right + 8, player.box.top + player.h/4, 0);
-		LEVEL_remove_tile(player.box.right + 8, player.box.bottom + player.h/4, 0);
+		LEVEL_remove_tile(player.box.right + 8, player.box.top + player.h/2 -8, 0);
+		LEVEL_remove_tile(player.box.right + 8, player.box.top + player.h/2, 0);
+		LEVEL_remove_tile(player.box.right + 8, player.box.top + player.h/2 +8, 0);
 		// add player damage
 		PLAYER_damage(1);
 	}
