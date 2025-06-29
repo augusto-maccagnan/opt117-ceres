@@ -4,9 +4,9 @@
 // #define DEBUG
 
 #ifdef DEBUG
-#define SCROLLING_SPEED 1
+#define SCROLLING_SPEED 0
 #else
-#define SCROLLING_SPEED 1
+#define SCROLLING_SPEED 2
 #endif
 
 Map* map;
@@ -198,7 +198,7 @@ void LEVEL_move_and_slide(GameObject* obj) {
 
 void LEVEL_collision(GameObject* obj) {
 	collision_result = 0;
-	GAMEOBJECT_update_boundbox(obj->next_x, obj->y, obj);
+	GAMEOBJECT_update_boundbox(obj->x, obj->y, obj);
 
 	if (obj->speed_x > 0) {	// moving right
 		if (LEVEL_wallXY(obj->box.right, obj->box.top + screen_y) || 
@@ -216,7 +216,7 @@ void LEVEL_collision(GameObject* obj) {
 		}
 	}
 
-	GAMEOBJECT_update_boundbox(obj->next_x, obj->next_y, obj);
+	// GAMEOBJECT_update_boundbox(obj->next_x, obj->y, obj);
 	
 	if(obj->speed_y > 0){ // moving down
 		if (LEVEL_wallXY(obj->box.left,  obj->box.bottom + screen_y) || 

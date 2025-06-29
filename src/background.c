@@ -36,7 +36,7 @@ u16 BACKGROUND_init(u16 ind) {
 void BACKGROUND_update() {
 	for (u8 i = 0; i < SCREEN_TILES_W/2; i++) {
 		offset_pos[i] += offset_speed[i];
-		values[i] = fix16ToInt(offset_pos[i]);
+		values[i] = F16_toInt(offset_pos[i]);
 	}
 	VDP_setVerticalScrollTile(BG_BACKGROUND, 0, values, SCREEN_TILES_W/2, DMA);
 }

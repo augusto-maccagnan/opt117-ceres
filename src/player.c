@@ -70,7 +70,7 @@ void PLAYER_update() {
 	SHOTS_update();
 
 	// update VDP/SGDK
-	SPR_setPosition(player.sprite, fix16ToInt(player.x), fix16ToInt(player.y));
+	SPR_setPosition(player.sprite, F16_toInt(player.x), F16_toInt(player.y));
 	SPR_setAnim(player.sprite, player.anim);
 }
 
@@ -265,8 +265,8 @@ void PLAYER_shoot() {
 			// if the shot is not active (data == 0), set it up
 			if (shots[i].sprite->data == 0) {
 				shots[i].sprite->data = 1;
-				shots[i].x = player.x + FIX16(player.w/2);
-				shots[i].y = player.y + FIX16(player.h/2);
+				shots[i].x = player.x + FIX16(player.w/2 - 4);
+				shots[i].y = player.y + FIX16(player.h/2 - 4);
 				shots[i].speed_x = 0;
 				shots[i].speed_y = -FIX16(SHOOT_SPEED); // horizontal shot
 				shots[i].anim = 0; // default animation
@@ -282,10 +282,10 @@ void SHOTS_update() {
 	for(int i = 0; i < MAX_SHOTS; i++) {
 		// if the shot is active (data == 1), update its position
 		if(shots[i].sprite->data == 1){
-			shots[i].next_x = shots[i].x + shots[i].speed_x;
-			shots[i].next_y = shots[i].y + shots[i].speed_y;
+			shots[i].x += shots[i].speed_x;
+			shots[i].y += shots[i].speed_y;
 
-			SPR_setPosition(shots[i].sprite, fix16ToInt(shots[i].x), fix16ToInt(shots[i].y));
+			SPR_setPosition(shots[i].sprite, F16_toInt(shots[i].x), F16_toInt(shots[i].y));
 			// check if bullet is outside the screen
 			if(!(shots[i].y > 0 && shots[i].y < FIX16(SCREEN_H))){
 				SPR_setVisibility(shots[i].sprite, HIDDEN);
@@ -294,8 +294,8 @@ void SHOTS_update() {
 			} else {
 				// check collision
 				SHOOT_collision(&shots[i]);
-				shots[i].x = shots[i].next_x;
-				shots[i].y = shots[i].next_y;
+				// shots[i].x = shots[i].next_x;
+				// shots[i].y = shots[i].next_y;
 			}
 		}
 	}
@@ -305,7 +305,7 @@ void SHOTS_update() {
 void SHOOT_collision(GameObject* shot) {
 	// check collision with level tiles
 	LEVEL_collision(shot);
-	if(LEVEL_collision_result() && COLLISION_TOP){
+	if(LEVEL_collision_result()){
 		// remove the shot
 		SPR_setVisibility(shot->sprite, HIDDEN);
 		shot->sprite->data = 0;

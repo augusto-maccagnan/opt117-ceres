@@ -73,7 +73,7 @@ extern enum GAME_STATE {
 // GENERAL PLAYER CONFIG ////////////////////////////////
 
 #define PLAYER_SPEED   FIX16(2)
-#define PLAYER_SPEED45 FIX16(0.707) * PLAYER_SPEED
+#define PLAYER_SPEED45 FIX16(0.707 * 2)
 
 #define PLAYER_MAX_HEALTH 10
 
