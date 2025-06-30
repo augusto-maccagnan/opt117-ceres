@@ -58,17 +58,17 @@
 #include <genesis.h>
 #include <sprite_eng.h>
 
-#include "globals.h"
+#include "engine/globals.h"
 #include "resources.h"
 
-#include "gameobject.h"
-#include "utils.h"
-#include "player.h"
-#include "background.h"
-#include "level.h"
-#include "hud.h"
-#include "screen.h"
+#include "engine/utils.h"
+#include "engine/gameobject.h"
+#include "engine/background.h"
+#include "engine/screen.h"
+#include "engine/level.h"
+#include "engine/hud.h"
 
+#include "entities/player.h"
 
 // IF DEBUGGING  CHANGE MAP IN resources.res to DEBUG MAP
 // #define DEBUG

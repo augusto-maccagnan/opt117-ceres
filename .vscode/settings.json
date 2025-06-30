@@ -25,7 +25,9 @@
         "gameobject.h": "c",
         "background.h": "c",
         "sys.h": "c",
-        "hud.h": "c"
+        "hud.h": "c",
+        "stdio.h": "c",
+        "mapobjects.h": "c"
     },
     "gens.path": "C:\\gensKMod_073\\gens.exe"
 }

@@ -5,6 +5,11 @@ SPRITE  spr_ship            "sprites/ship_new.png"      3 3 FAST 3
 # SPRITE  spr_ship            "sprites/ship_bound_new.png"      3 3 FAST 3
 SPRITE  spr_bullet          "sprites/bullet.png"    1 1 FAST 3
 
+# Enemies Resources
+SPRITE  spr_ufo            "sprites/ufo.png"      3 3 FAST 3
+SPRITE  spr_kaz            "sprites/kaz_ship.png"      3 3 FAST 3
+SPRITE  spr_rkt            "sprites/rkt_ship.png"      3 3 FAST 3
+
 # Hud and Background Resources
 IMAGE   img_background    "backgrounds/background_1.png" BEST
 IMAGE   img_hud           "hud/hud.png" FAST
