@@ -6,7 +6,7 @@
 #ifdef DEBUG
 #define SCROLLING_SPEED 0
 #else
-#define SCROLLING_SPEED 2
+#define SCROLLING_SPEED 3
 #endif
 
 Map* map;
@@ -36,15 +36,31 @@ u16 LEVEL_init(u16 ind, u8 rooms) {
 	#ifdef DEBUG
 	kprintf("rooms=%d", rooms);
 	#endif
-	PAL_setPalette(PAL_MAP, level1_pal.data, DMA);
-	VDP_loadTileSet(&level1_tiles, ind, DMA);
-	map = MAP_create(&level1_map, BG_MAP, TILE_ATTR_FULL(PAL_MAP, FALSE, FALSE, FALSE, ind));
+	PAL_setPalette(PAL_MAP, level_pal.data, DMA);
+	VDP_loadTileSet(&level_tiles, ind, DMA);
+	switch (current_level)
+	{
+	case 1:
+		map = MAP_create(&level1_map, BG_MAP, TILE_ATTR_FULL(PAL_MAP, FALSE, FALSE, FALSE, ind));
+		break;
+	case 2:
+		map = MAP_create(&level2_map, BG_MAP, TILE_ATTR_FULL(PAL_MAP, FALSE, FALSE, FALSE, ind));
+		break;
+	case 3:
+		// VDP_loadTileSet(&level3_tiles, ind, DMA);
+		// map = MAP_create(&level3_map, BG_MAP, TILE_ATTR_FULL(PAL_MAP, FALSE, FALSE, FALSE, ind));
+		break;
+	default:
+		break;
+	}
+	// VDP_loadTileSet(&level1_tiles, ind, DMA);
+	// map = MAP_create(&level1_map, BG_MAP, TILE_ATTR_FULL(PAL_MAP, FALSE, FALSE, FALSE, ind));
 
 	MAP_scrollToEx(map, 0, (rooms-1)*SCREEN_H, TRUE);
 	
 	LEVEL_generate_screen_collision_map(IDX_WALL_FIRST, IDX_WALL_LAST, rooms);
 	
-	ind += level1_tiles.numTile;
+	ind += level_tiles.numTile;
 
 	return ind;
 }
@@ -372,10 +388,10 @@ void LEVEL_scroll_update(s16 offset_x, s16 offset_y, u8 rooms) {
 	// move to next room and generate collision map
 	screen_x += offset_x;
 	screen_y += offset_y;
-	if(screen_y == 0){
-		screen_y = (rooms-1)*SCREEN_H;
-		// next level logic
-		// game_state = GAME_CLEAR;
+	if(screen_y >= 0 && screen_y <= SCROLLING_SPEED*2){
+		kprintf("GAME NEXT LEVEL");
+		game_state = GAME_NEXT_LEVEL;
+		return;
 	}
 	MAP_scrollTo(map, screen_x, screen_y);
 
@@ -387,9 +403,9 @@ void LEVEL_scroll_update(s16 offset_x, s16 offset_y, u8 rooms) {
 }
 
 void LEVEL_update_camera(GameObject* obj, u8 rooms) {
-	scroll_time++;
+	// scroll_time++;
 	// if(scroll_time%2 == 0){
-		LEVEL_scroll_update(0, -SCROLLING_SPEED, rooms);
+	LEVEL_scroll_update(0, -SCROLLING_SPEED, rooms);
 	// }
 }
 

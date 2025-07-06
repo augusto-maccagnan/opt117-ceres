@@ -31,6 +31,7 @@ typedef struct GameObject {
 	u8 health;
 	u16 dir;
 	u8 timer;
+	u8 damage;
 
 	struct GameObject* next;		// for the Linked Lists in OBJECTS POOL
 

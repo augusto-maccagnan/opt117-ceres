@@ -24,15 +24,19 @@ enum NUMBER_OF_ROOMS {
 enum ENEMY_SCORE {
     ASTEROID = 5,
     UFO = 10,
-    SPACESHIP = 15
+    KAZE = 15,
+    ROCKET = 20
 };
 
 extern enum GAME_STATE {
     GAME_INIT,
     GAME_PLAYING,
     GAME_OVER,
-    GAME_CLEAR
+    GAME_CLEAR,
+    GAME_NEXT_LEVEL
 } game_state;
+
+extern u8 current_level;
 
 #define MAX_ROOMS 50
 

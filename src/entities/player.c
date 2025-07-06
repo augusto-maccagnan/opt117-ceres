@@ -28,13 +28,8 @@ u8 immunity_time = 0;
 u16 PLAYER_init(u16 ind) {
 	ind += GAMEOBJECT_init(&player, &spr_ship, SCREEN_W/2-12, SCREEN_H/2-12, 0, 0, PAL_PLAYER, ind);
 	for(u8 i = 0; i < MAX_SHOTS; ++i){
-		#ifndef DEBUG
 		ind += GAMEOBJECT_init(&shots[i], &spr_bullet, 0, 0, -8, -8, PAL_PLAYER, ind);
-		#else
-		shots[i].sprite = SPR_addSprite(&spr_bullet, 0, 0, TILE_ATTR_FULL(PAL_PLAYER, FALSE, FALSE, 0, ind));
-		#endif
-		ind += shots[i].sprite->definition->maxNumTile;
-		shots[i].sprite->data = 0;
+		shots[i].active = FALSE;
 	}
 	player.health = PLAYER_MAX_HEALTH;
 	return ind;
@@ -114,12 +109,18 @@ void PLAYER_get_input_dir4() {
  */
 void PLAYER_get_input_dir8() {
 
-	if(key_pressed(JOY_1, BUTTON_A)) {
+	if(key_down(JOY_1, BUTTON_A)) {
 		// validate minimun delay between shots
 		if(shoot_timer > SHOOT_DELAY) {
 			PLAYER_shoot();
 			shoot_timer = 0;
 		}
+	}
+
+	if(key_pressed(JOY_1, BUTTON_B)) {
+		// level cheat
+		game_state = GAME_NEXT_LEVEL;
+		return;
 	}
 
 	player.speed_x = 0;
@@ -263,8 +264,8 @@ void PLAYER_shoot() {
 		// find an empty shot slot
 		for (u8 i = 0; i < MAX_SHOTS; i++) {
 			// if the shot is not active (data == 0), set it up
-			if (shots[i].sprite->data == 0) {
-				shots[i].sprite->data = 1;
+			if (!shots[i].active) {
+				shots[i].active = TRUE;
 				shots[i].x = player.x + FIX16(player.w/2 - 4);
 				shots[i].y = player.y + FIX16(player.h/2 - 4);
 				shots[i].speed_x = 0;
@@ -281,7 +282,7 @@ void PLAYER_shoot() {
 void SHOTS_update() {
 	for(int i = 0; i < MAX_SHOTS; i++) {
 		// if the shot is active (data == 1), update its position
-		if(shots[i].sprite->data == 1){
+		if(shots[i].active){
 			shots[i].x += shots[i].speed_x;
 			shots[i].y += shots[i].speed_y;
 
@@ -289,7 +290,7 @@ void SHOTS_update() {
 			// check if bullet is outside the screen
 			if(!(shots[i].y > 0 && shots[i].y < FIX16(SCREEN_H))){
 				SPR_setVisibility(shots[i].sprite, HIDDEN);
-				shots[i].sprite->data = 0;
+				shots[i].active = FALSE;
 				shoot_count--;
 			} else {
 				// check collision
@@ -308,7 +309,7 @@ void SHOOT_collision(GameObject* shot) {
 	if(LEVEL_collision_result()){
 		// remove the shot
 		SPR_setVisibility(shot->sprite, HIDDEN);
-		shot->sprite->data = 0;
+		shot->active = FALSE;
 		shoot_count--;
 		#ifdef DEBUG
 		kprintf("remove x=%d y=%d mt_x=%d mt_y=%d", shot->box.left, shot->box.top, shot->box.left/16, shot->box.top/16);

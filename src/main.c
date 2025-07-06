@@ -43,7 +43,10 @@
  * [  ] Corrigir sprite da nave
  * [TS] BUG - Colisão do tiro falha as vezes
  * [  ] Tela de Level Clear
- * [WIP] Arrumar colisão quando player está movendo lateralmente (nave em um y superior ao tile de colisão)
+ * [  ] Transição de levels
+ * [  ] Implementação de novo level
+ * [WIP] Inimigo do tipo UFO
+ * [BUG] Arrumar colisão quando player está movendo lateralmente (nave em um y superior ao tile de colisão)
  * [OK] Contabilizar dano no player -> Problema com a remoção de tiles do mapa
  * [OK] Tempo de imunidade do player
  * [OK] Tela de Game Over
@@ -67,8 +70,11 @@
 #include "engine/screen.h"
 #include "engine/level.h"
 #include "engine/hud.h"
+#include "engine/objects_pool.h"
+#include "engine/mapobjects.h"
 
 #include "entities/player.h"
+#include "entities/enemy.h"
 
 // IF DEBUGGING  CHANGE MAP IN resources.res to DEBUG MAP
 // #define DEBUG
@@ -82,6 +88,47 @@ enum GAME_STATE game_state;
 ////////////////////////////////////////////////////////////////////////////
 // GAME INIT
 
+// enemies pool
+#define MAX_ENEMIES 50
+GameObject enemy_array[MAX_ENEMIES];
+u16 enemy_tiles_ind;
+ObjectsPool enemy_pool;
+
+void init_enemies() {
+	OBJPOOL_init(&enemy_pool, enemy_array, LEN(enemy_array));
+
+	curr_mapobj = 0;
+
+	// load enemy tiles
+	enemy_tiles_ind = ind;
+	ind += ENEMY_load_tiles(ind);
+}
+
+void spawn_enemies() {
+	// looks if there are enemies in spawn range
+	switch (current_level)
+	{
+	case 1:
+		break;
+	case 2:
+		// entering level 2, start spawning enemies
+		kprintf("Spawning enemies in level 2");
+		// spawn enemies in level 2
+		MapObject* mapobj = MAPOBJ_lookup_enemies(level2_enemies, LEN(level2_enemies));
+		while(mapobj){
+			// looks for an available space in the enemy pool
+			GameObject* enemy = OBJPOOL_get_available(&enemy_pool);
+			if (!enemy) return;
+			// Enemy factory function: It gets the needed data from MapObject
+			ENEMY_init(enemy, mapobj, enemy_tiles_ind);
+			mapobj = MAPOBJ_lookup_enemies(level2_enemies, LEN(level2_enemies));
+		}
+	default:
+		break;
+	}
+}
+
+
 void init_state() {
 	// reset index for tiles in VRAM
 	ind = TILE_USER_INDEX; 
@@ -94,6 +141,9 @@ void init_state() {
 
 	// reset level rooms
 	level_rooms = LEVEL1;
+
+	// set current level
+	current_level = 1;
 }
 
 
@@ -125,26 +175,80 @@ void game_init() {
 	// init GAME OBJECTS ////////////////////////////////////////////
 
 	ind += PLAYER_init(ind);
+
+	init_enemies();
+}
+
+void game_next_level() {
+	// show transition screen
+	kprintf("Next level: %d", current_level+1);
+	SPR_reset();
+	//
+	current_level++;
+	if (current_level > 4) {
+		current_level = 1;
+		game_state = GAME_CLEAR;
+		return;
+	}
+
+	ind += BACKGROUND_init(ind);
+	ind += HUD_init(ind);
+	//
+	switch (current_level)
+	{
+	case 1:
+		level_rooms = LEVEL1;
+		break;
+	case 2:
+		level_rooms = LEVEL2;
+		break;
+	case 3:
+		level_rooms = LEVEL3;
+		break;
+	case 4:
+		level_rooms = LEVEL4;
+		break;
+	default:
+		break;
+	}
+	// level_rooms = LEVEL2;
+	ind += LEVEL_init(ind, level_rooms);
+	
+	
+	ind += PLAYER_init(ind);
+
+	init_enemies();
+	// sleep(500);
 }
 
 ////////////////////////////////////////////////////////////////////////////
 // GAME LOGIC
 
-// static inline void color_effects() {
-// 	--bg_colors_delay;
-// 	if (bg_colors_delay == 0) {
-// 		// rotate_colors_left(PAL_BACKGROUND*16, PAL_BACKGROUND*16+15);
-// 		glow_color(PAL_BACKGROUND*16+8, bg_color_glow, 5);
+inline void update_enemies() {
+	GameObject* obj = OBJPOOL_loop_init(&enemy_pool);
+	while (obj) {
+		obj->update(obj);
+		GameObject* obj_to_release = NULL;
 
-// 		bg_colors_delay = 15;
-// 	}
-// }
+		if (GAMEOBJECT_check_collision(&player, obj)) {
+			PLAYER_damage(obj->damage);
+			obj_to_release = obj;
+		}
+
+		obj = OBJPOOL_loop_next(&enemy_pool);
+		if (obj_to_release) {
+			OBJPOOL_release(&enemy_pool, obj_to_release);
+		}
+	}
+}
 
 static inline void game_update() {
 	update_input();
 
 	PLAYER_update();
+	update_enemies();
 
+	spawn_enemies();
 	#ifndef DEBUG
 	BACKGROUND_update();
 	#endif
@@ -176,6 +280,10 @@ int main(bool resetType) {
 				break;
 		case GAME_PLAYING:
 			game_update();
+			break;
+		case GAME_NEXT_LEVEL:
+			game_next_level();
+			game_state = GAME_PLAYING;
 			break;
 		case GAME_CLEAR:
 			break;

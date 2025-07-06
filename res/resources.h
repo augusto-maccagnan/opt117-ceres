@@ -10,8 +10,10 @@ extern const SpriteDefinition spr_kaz;
 extern const SpriteDefinition spr_rkt;
 extern const Image img_background;
 extern const Image img_hud;
-extern const TileSet level1_tiles;
-extern const Palette level1_pal;
+extern const TileSet level_tiles;
+extern const Palette level_pal;
 extern const MapDefinition level1_map;
+extern const MapDefinition level2_map;
+extern const void* level2_enemies[20];
 
 #endif // _RES_RESOURCES_H_

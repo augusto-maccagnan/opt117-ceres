@@ -17,7 +17,9 @@ static u16** kaz_indexes;
 u16 ENEMY_load_tiles(u16 ind) {
 	u16 num_tiles;
 	ufo_indexes = SPR_loadAllFrames(&spr_ufo, ind, &num_tiles);
+    ind += num_tiles;
     kaz_indexes = SPR_loadAllFrames(&spr_kaz, ind, &num_tiles);
+    ind += num_tiles;
     rkt_indexes = SPR_loadAllFrames(&spr_rkt, ind, &num_tiles);
 	
     return num_tiles;
@@ -32,12 +34,20 @@ void ENEMY_init(GameObject* const obj, const MapObject* const mapobj, u16 ind) {
     {
     case ENEMY_UFO:
         GAMEOBJECT_init(obj, &spr_ufo, x, y, -4, -4, PAL_ENEMY, ind);
+        if(mapobj->x < 0){
+            obj->speed_x = mapobj->speed;
+        }
+        if(mapobj->x > 320){
+            obj->speed_x = -mapobj->speed;
+        }
         break;
     case ENEMY_RKT:
         GAMEOBJECT_init(obj, &spr_rkt, x, y, -4, -4, PAL_ENEMY, ind);
+        obj->speed_y = -mapobj->speed;
         break;
     case ENEMY_KAZ:
         GAMEOBJECT_init(obj, &spr_kaz, x, y, -4, -4, PAL_ENEMY, ind);
+        obj->speed_y = -mapobj->speed;
         break;
     default:
         GAMEOBJECT_init(obj, &spr_ufo, x, y, -4, -4, PAL_ENEMY, ind);
@@ -45,8 +55,8 @@ void ENEMY_init(GameObject* const obj, const MapObject* const mapobj, u16 ind) {
         break;
     }
     // GAMEOBJECT_init(obj, &spr_ball, x, y, -4, -4, PAL_ENEMY, ind);
-    obj->speed_x = F16_mul(  cosFix16(mapobj->direction * 128), mapobj->speed );
-    obj->speed_y = F16_mul( -sinFix16(mapobj->direction * 128), mapobj->speed );
+    // obj->speed_x = F16_mul(  cosFix16(mapobj->direction * 128), mapobj->speed );
+    // obj->speed_y = F16_mul( -sinFix16(mapobj->direction * 128), mapobj->speed );
 
     // check enemy type and define behavior
     switch (mapobj->type) {
@@ -56,7 +66,6 @@ void ENEMY_init(GameObject* const obj, const MapObject* const mapobj, u16 ind) {
             obj->sprite->data = 1;
             SPR_setAnim(obj->sprite, 1);
             break;
-    
         case ENEMY_RKT:
             obj->update = ENEMY_rkt_update;
             SPR_setAnim(obj->sprite, 1);

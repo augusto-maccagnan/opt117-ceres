@@ -5,8 +5,12 @@
 #include <sprite_eng.h>
 #include "globals.h"
 
+#define MAX_TEXT_LINE 200
+
 extern u8 buttons[NUMBER_OF_JOYPADS];
 extern u8 buttons_old[NUMBER_OF_JOYPADS];
+
+extern char line[MAX_TEXT_LINE];
 
 ////////////////////////////////////////////////////////////////////////////
 // LOGIC
@@ -50,6 +54,19 @@ static inline void glow_color(u16 color_index, const u16* const color_vector, u8
 	if (idx == 0 || idx == n-1) {
 		inc = -inc;
 	}
+}
+static inline void text_add_int(u16 num) {
+	static char text[6]; // INT_MAX: 65536
+	intToStr(num, text, 2);
+	if (strlen(text) + strlen(line) + 1 < MAX_TEXT_LINE) {
+		strcat(line, text);
+		strcat(line, ",");
+	}
+}
+
+inline void text_print_and_clear() {
+	kprintf("%s", line);
+	line[0] = 0;
 }
 
 inline void rotate_colors(u8 first_index, u8 last_index, s8 direction) {
