@@ -17,6 +17,7 @@ u16 GAMEOBJECT_init(GameObject* const obj, const SpriteDefinition* const sprite,
 	PAL_setPalette(pal, sprite->palette->data, DMA);
 	
 	obj->sprite = SPR_addSprite(sprite, x, y, TILE_ATTR_FULL(pal, FALSE, FALSE, 0, ind));
+	// obj->sprite = SPR_addSpriteSafe(sprite, x, y, TILE_ATTR_FULL(pal, FALSE, FALSE, 0, ind));
 
 	obj->w = obj->sprite->definition->w + w_offset;
 	obj->h = obj->sprite->definition->h + h_offset;

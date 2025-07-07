@@ -14,8 +14,8 @@
 ////////////////////////////////////////////////////////////////////////////
 // INITIALIZATION
 
-u16 ENEMY_load_tiles(u16 ind);
-void ENEMY_init(GameObject* const obj, const MapObject* const mapobj, u16 ind);
+// u16 ENEMY_load_tiles(u16 ind);
+u16 ENEMY_init(GameObject* const obj, const MapObject* const mapobj, u16 ind);
 
 ////////////////////////////////////////////////////////////////////////////
 // GAME LOOP/LOGIC

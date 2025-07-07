@@ -24,8 +24,8 @@ enum NUMBER_OF_ROOMS {
 enum ENEMY_SCORE {
     ASTEROID = 5,
     UFO = 10,
-    KAZE = 15,
-    ROCKET = 20
+    KAZ = 15,
+    RKT = 20
 };
 
 extern enum GAME_STATE {

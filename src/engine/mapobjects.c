@@ -2,6 +2,8 @@
 #include "engine/level.h"
 #include "engine/utils.h"
 
+#define DEBUG
+
 // RoomEnemies lookup_table[MAX_ROOMS];
 int curr_mapobj;
 
@@ -45,16 +47,28 @@ int curr_mapobj;
  */
 MapObject* MAPOBJ_lookup_enemies(const void* level_objects[], u16 n){
     MapObject* obj = NULL;
-
+    if(curr_mapobj >= n) {
+        // if all objects were already processed, return NULL
+        return NULL;
+    }
     // check if current MapObject is vertically close to active screen
     // OBS: inverse index, because the level starts from bottom and ends on top
     // OBS2: level_objects is ordered by y position
-    obj = (MapObject*)level_objects[n-curr_mapobj];
+    obj = (MapObject*)level_objects[n-curr_mapobj-1];
     if(obj->y >= F32(screen_y - SCREEN_H/4)) {
+        obj->y = FIX32(F32_toInt(obj->y) % SCREEN_H + SCREEN_H);
+        #ifdef DEBUG
+        print_object_info(obj);
+        #endif
         curr_mapobj++;
         return obj;   
     } else {
         // if y is out of screen, return NULL
         return NULL;
     }
+}
+
+void print_object_info(MapObject* obj){
+    kprintf("MapObject: %d, x: %ld, y: %ld, type: %d, damage: %d", 
+            curr_mapobj, F32_toInt(obj->x), F32_toInt(obj->y), obj->type, obj->damage);
 }

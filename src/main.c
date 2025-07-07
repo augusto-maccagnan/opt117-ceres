@@ -91,7 +91,7 @@ enum GAME_STATE game_state;
 // enemies pool
 #define MAX_ENEMIES 50
 GameObject enemy_array[MAX_ENEMIES];
-u16 enemy_tiles_ind;
+// u16 enemy_tiles_ind;
 ObjectsPool enemy_pool;
 
 void init_enemies() {
@@ -100,8 +100,8 @@ void init_enemies() {
 	curr_mapobj = 0;
 
 	// load enemy tiles
-	enemy_tiles_ind = ind;
-	ind += ENEMY_load_tiles(ind);
+	// enemy_tiles_ind = ind;
+	// ind += ENEMY_load_tiles(ind);
 }
 
 void spawn_enemies() {
@@ -112,15 +112,14 @@ void spawn_enemies() {
 		break;
 	case 2:
 		// entering level 2, start spawning enemies
-		kprintf("Spawning enemies in level 2");
-		// spawn enemies in level 2
 		MapObject* mapobj = MAPOBJ_lookup_enemies(level2_enemies, LEN(level2_enemies));
 		while(mapobj){
 			// looks for an available space in the enemy pool
 			GameObject* enemy = OBJPOOL_get_available(&enemy_pool);
 			if (!enemy) return;
 			// Enemy factory function: It gets the needed data from MapObject
-			ENEMY_init(enemy, mapobj, enemy_tiles_ind);
+			// ENEMY_init(enemy, mapobj, enemy_tiles_ind);
+			ind += ENEMY_init(enemy, mapobj, ind);
 			mapobj = MAPOBJ_lookup_enemies(level2_enemies, LEN(level2_enemies));
 		}
 	default:
@@ -183,6 +182,7 @@ void game_next_level() {
 	// show transition screen
 	kprintf("Next level: %d", current_level+1);
 	SPR_reset();
+	ind = TILE_USER_INDEX; // reset index for tiles in VRAM
 	//
 	current_level++;
 	if (current_level > 4) {
@@ -232,6 +232,39 @@ inline void update_enemies() {
 
 		if (GAMEOBJECT_check_collision(&player, obj)) {
 			PLAYER_damage(obj->damage);
+			obj_to_release = obj;
+		}
+
+		for(int i = 0; i < shoot_count; i++) {
+			if(shots[i].active) {
+				if(GAMEOBJECT_check_collision(obj, &shots[i])) {
+					// if enemy is hit by player shot, release it
+					obj_to_release = obj;
+					// remove the shot
+					SPR_setVisibility(shots[i].sprite, HIDDEN);
+					shots[i].active = FALSE; // remove shot
+					shoot_count--;
+					// increase score
+					switch (obj->type)
+					{
+					case ENEMY_UFO:
+						HUD_score(UFO);
+						break;
+					case ENEMY_RKT:
+						HUD_score(RKT);
+						break;
+					case ENEMY_KAZ:
+						HUD_score(KAZ);
+						break;
+					default:
+						break;
+					}
+				}
+			}
+		}
+
+		// enemy inactivation, by going out of screen
+		if(!obj->active){
 			obj_to_release = obj;
 		}
 

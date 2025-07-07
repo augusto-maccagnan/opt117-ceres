@@ -8,9 +8,16 @@
 #define ANIM_VERTICAL    0
 #define ANIM_HORIZONTAL  1
 
+#define SHOOT_DELAY 10
+#define MAX_SHOTS 15
+#define SHOOT_SPEED 8
+#define IMMUNITY_TIME 15
+
 // #define PLAYER_SPEED45 FIX16(0.707)
 
 extern GameObject player;
+extern GameObject shots[MAX_SHOTS];
+extern u8 shoot_count;
 
 ////////////////////////////////////////////////////////////////////////////
 // INITIALIZATION

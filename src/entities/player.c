@@ -9,11 +9,6 @@
 
 // #define DEBUG
 
-#define SHOOT_DELAY 10
-#define MAX_SHOTS 15
-#define SHOOT_SPEED 8
-#define IMMUNITY_TIME 15
-
 GameObject player;
 u8 shoot_timer = 0;
 u8 shoot_count = 0;
@@ -26,12 +21,17 @@ u8 immunity_time = 0;
 // INIT
 
 u16 PLAYER_init(u16 ind) {
+	
+	// initialize player
 	ind += GAMEOBJECT_init(&player, &spr_ship, SCREEN_W/2-12, SCREEN_H/2-12, 0, 0, PAL_PLAYER, ind);
+	player.health = PLAYER_MAX_HEALTH;
+
+	// initialize shots
+	shoot_count = 0;
 	for(u8 i = 0; i < MAX_SHOTS; ++i){
-		ind += GAMEOBJECT_init(&shots[i], &spr_bullet, 0, 0, -8, -8, PAL_PLAYER, ind);
+		ind += GAMEOBJECT_init(&shots[i], &spr_bullet, 0, 0, -8, -8, PAL_ENEMY, ind);
 		shots[i].active = FALSE;
 	}
-	player.health = PLAYER_MAX_HEALTH;
 	return ind;
 }
 
