@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="420" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="26">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="420" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="30">
  <tileset firstgid="1" source="ceres_tiles.tsx"/>
  <tileset firstgid="3" source="enemy_markers.tsx"/>
  <layer id="1" name="map_layer" width="20" height="420">
@@ -441,6 +441,38 @@
     <property name="enemy_type" type="int" value="0"/>
     <property name="exportPosition" type="bool" value="true"/>
     <property name="speed" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="26" gid="3" x="89" y="6209" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="1"/>
+    <property name="enemy_type" type="int" value="2"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="27" gid="3" x="220" y="6200" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="1"/>
+    <property name="enemy_type" type="int" value="2"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="2"/>
+   </properties>
+  </object>
+  <object id="28" gid="4" x="49" y="6250" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="29" gid="4" x="260" y="6251" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
    </properties>
   </object>
  </objectgroup>

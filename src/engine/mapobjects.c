@@ -2,7 +2,7 @@
 #include "engine/level.h"
 #include "engine/utils.h"
 
-#define DEBUG
+// #define DEBUG
 
 // RoomEnemies lookup_table[MAX_ROOMS];
 int curr_mapobj;

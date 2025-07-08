@@ -59,10 +59,8 @@ u16 LEVEL_init(u16 ind, u8 rooms) {
 	MAP_scrollToEx(map, 0, (rooms-1)*SCREEN_H, TRUE);
 	
 	LEVEL_generate_screen_collision_map(IDX_WALL_FIRST, IDX_WALL_LAST, rooms);
-	
-	ind += level_tiles.numTile;
 
-	return ind;
+	return level_tiles.numTile;
 }
 /**
  * Varre a estrutura do MAPA TMX e monta a matriz de colisão do espaço da tela.

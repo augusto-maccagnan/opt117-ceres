@@ -16,7 +16,7 @@
  * ==================================================================
  * Considerando que o caminho seja ~/sgdk200, para fazer build:
  * 
- * $ make GDK=~/sgdk200 -f ~/sgdk200/makefile_wine.gen
+ * $ make GDK=~/sgdk211 -f ~/sgdk211/makefile_wine.gen
  * 
  * TILED -> customizar grade em preferências
  * GENS -> habilitar recursos avançados de debug
@@ -101,7 +101,7 @@ void init_enemies() {
 
 	// load enemy tiles
 	// enemy_tiles_ind = ind;
-	// ind += ENEMY_load_tiles(ind);
+	ENEMY_load_tiles(ind);
 }
 
 void spawn_enemies() {
@@ -119,9 +119,15 @@ void spawn_enemies() {
 			if (!enemy) return;
 			// Enemy factory function: It gets the needed data from MapObject
 			// ENEMY_init(enemy, mapobj, enemy_tiles_ind);
-			ind += ENEMY_init(enemy, mapobj, ind);
+			ENEMY_init(enemy, mapobj, ind);
 			mapobj = MAPOBJ_lookup_enemies(level2_enemies, LEN(level2_enemies));
 		}
+	case 3:
+		break;
+	case 4:
+		break;
+	case 5:
+		break;
 	default:
 		break;
 	}
@@ -173,14 +179,14 @@ void game_init() {
 	
 	// init GAME OBJECTS ////////////////////////////////////////////
 
-	ind += PLAYER_init(ind);
+	PLAYER_init(ind);
 
 	init_enemies();
 }
 
 void game_next_level() {
 	// show transition screen
-	kprintf("Next level: %d", current_level+1);
+	
 	SPR_reset();
 	ind = TILE_USER_INDEX; // reset index for tiles in VRAM
 	//
@@ -190,6 +196,7 @@ void game_next_level() {
 		game_state = GAME_CLEAR;
 		return;
 	}
+	kprintf("Next level: %d", current_level);
 
 	ind += BACKGROUND_init(ind);
 	ind += HUD_init(ind);
@@ -214,8 +221,7 @@ void game_next_level() {
 	// level_rooms = LEVEL2;
 	ind += LEVEL_init(ind, level_rooms);
 	
-	
-	ind += PLAYER_init(ind);
+	PLAYER_init(ind);
 
 	init_enemies();
 	// sleep(500);

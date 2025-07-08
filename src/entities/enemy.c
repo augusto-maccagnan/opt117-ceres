@@ -8,6 +8,10 @@ static u16** ufo_indexes;
 static u16** rkt_indexes;
 static u16** kaz_indexes;
 
+u16 ufo_index;
+u16 rkt_index;
+u16 kaz_index;
+
 ////////////////////////////////////////////////////////////////////////////
 // PRIVATE PROTOTYPES
 
@@ -16,26 +20,31 @@ static u16** kaz_indexes;
 ////////////////////////////////////////////////////////////////////////////
 // INITIALIZATION
 
-// u16 ENEMY_load_tiles(u16 ind) {
-// 	u16 num_tiles;
-// 	ufo_indexes = SPR_loadAllFrames(&spr_ufo, ind, &num_tiles);
-//     ind += num_tiles;
-//     kaz_indexes = SPR_loadAllFrames(&spr_kaz, ind, &num_tiles);
-//     ind += num_tiles;
-//     rkt_indexes = SPR_loadAllFrames(&spr_rkt, ind, &num_tiles);
-	
-//     return num_tiles;
-// }
+u16 ENEMY_load_tiles(u16 ind) {
+    u16 num_tiles, aux;
+    aux = ind;
+    ufo_index = ind;
+	ufo_indexes = SPR_loadAllFrames(&spr_ufo, ind, &num_tiles);
+    ind += num_tiles;
+
+    kaz_index = ind;
+    kaz_indexes = SPR_loadAllFrames(&spr_kaz, ind, &num_tiles);
+    ind += num_tiles;
+
+    rkt_index = ind;
+    rkt_indexes = SPR_loadAllFrames(&spr_rkt, ind, &num_tiles);
+
+    return ind - aux;
+}
 
 u16 ENEMY_init(GameObject* const obj, const MapObject* const mapobj, u16 ind) {
-    // convert map coord to screen coord (and fix 1 tile offset y from Tiled)
 	f32 x = F32_toInt(mapobj->x);
-	f32 y = F32_toInt(mapobj->y) % SCREEN_H - 16;
-
+    f32 y = F32(0);
     switch (mapobj->type) 
     {
     case ENEMY_UFO:
-        ind += GAMEOBJECT_init(obj, &spr_ufo, x, y, 0, 0, PAL_ENEMY, ind);
+        y = F32_toInt(mapobj->y) % SCREEN_H - 16;
+        GAMEOBJECT_init_no_pal(obj, &spr_ufo, x, y, 0, -4, PAL_ENEMY, ufo_index);
         if(mapobj->x < 0){
             #ifdef DEBUG
             kprintf("going rigth");
@@ -50,21 +59,20 @@ u16 ENEMY_init(GameObject* const obj, const MapObject* const mapobj, u16 ind) {
         }
         break;
     case ENEMY_RKT:
-        ind += GAMEOBJECT_init(obj, &spr_rkt, x, y, -4, -4, PAL_ENEMY, ind);
-        obj->speed_y = -mapobj->speed;
+        y = screen_y- F32_toInt(mapobj->y) - SCREEN_H/3;
+        GAMEOBJECT_init_no_pal(obj, &spr_rkt, x, y, 0, -4, PAL_ENEMY, rkt_index);
+        obj->speed_y = mapobj->speed;
         break;
     case ENEMY_KAZ:
-        ind += GAMEOBJECT_init(obj, &spr_kaz, x, y, -4, -4, PAL_ENEMY, ind);
-        obj->speed_y = -mapobj->speed;
+        y = screen_y - F32_toInt(mapobj->y) - SCREEN_H/3;
+        GAMEOBJECT_init_no_pal(obj, &spr_kaz, x, y, 0, -4, PAL_ENEMY, kaz_index);
+        obj->speed_y = mapobj->speed;
         break;
     default:
-        ind += GAMEOBJECT_init(obj, &spr_ufo, x, y, -4, -4, PAL_ENEMY, ind);
-        kprintf("ERROR: MAPOBJECTS - unknow enemy type %d. Default to ENEMY_UFO.", mapobj->type);
+        GAMEOBJECT_init_no_pal(obj, &spr_rkt, x, y, 0, -4, PAL_ENEMY, rkt_index);
+        kprintf("ERROR: MAPOBJECTS - unknow enemy type %d. Default to ENEMY_RKT.", mapobj->type);
         break;
     }
-    // GAMEOBJECT_init(obj, &spr_ball, x, y, -4, -4, PAL_ENEMY, ind);
-    // obj->speed_x = F16_mul(  cosFix16(mapobj->direction * 128), mapobj->speed );
-    // obj->speed_y = F16_mul( -sinFix16(mapobj->direction * 128), mapobj->speed );
 
     // check enemy type and define behavior
     switch (mapobj->type) {
@@ -87,11 +95,14 @@ u16 ENEMY_init(GameObject* const obj, const MapObject* const mapobj, u16 ind) {
 
     obj->type = mapobj->type;
     obj->timer = 0;
+    obj->damage = mapobj->damage;
+    obj->sprite->data = mapobj->type;
 
-    // SPR_setAutoTileUpload(obj->sprite, FALSE);
+    SPR_setAutoTileUpload(obj->sprite, FALSE);
+    SPR_setFrameChangeCallback(obj->sprite, &frame_changed);
+
     SPR_setVisibility(obj->sprite, VISIBLE);
     return ind;
-    // SPR_setFrameChangeCallback(obj->sprite, &frame_changed);
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -165,7 +176,7 @@ void ENEMY_ufo_update(GameObject* obj) {
         if(obj->timer % 60 == 0){
             // UFO_shoot() || SHOT_init(x, y, speed_x, speed_y)
             // UFO_shoot();
-            kprintf("UFO should shoot!");
+            // kprintf("UFO should shoot!");
             obj->timer = 0;
         }
     }
@@ -177,6 +188,10 @@ void ENEMY_rkt_update(GameObject* obj) {
     obj->x += obj->speed_x;
     obj->y += obj->speed_y;
     
+    if(F16_toInt(obj->y) + obj->h > SCREEN_H){
+        obj->active = FALSE;
+    }
+
     GAMEOBJECT_update_boundbox(obj->x, obj->y, obj);
     GAMEOBJECT_set_hwsprite_position(obj);
 }
@@ -217,10 +232,25 @@ void ENEMY_on_hit(GameObject* obj, u8 amount) {
 ////////////////////////////////////////////////////////////////////////////
 // PRIVATE FUNCTIONS
 
-// static void frame_changed(Sprite* sprite) {
-//     // get VRAM tile index for this animation of this sprite
-//     u16 tileIndex = ball_indexes[sprite->animInd][sprite->frameInd];
-	
-//     // manually set tile index for the current frame (preloaded in VRAM)
-//     SPR_setVRAMTileIndex(sprite, tileIndex);
-// }
+static void frame_changed(Sprite* sprite) {
+    // get VRAM tile index for this animation of this sprite
+    u16 tileIndex;
+    switch (sprite->data)
+    {
+    case ENEMY_UFO:
+        tileIndex = ufo_indexes[sprite->animInd][sprite->frameInd];
+        break;
+    case ENEMY_RKT:
+        tileIndex = rkt_indexes[sprite->animInd][sprite->frameInd];
+        break;
+    case ENEMY_KAZ:
+        tileIndex = kaz_indexes[sprite->animInd][sprite->frameInd];
+        break;
+    default:
+        return;
+        break;
+    }
+    // u16 tileIndex = ball_indexes[sprite->animInd][sprite->frameInd];
+    // manually set tile index for the current frame (preloaded in VRAM)
+    SPR_setVRAMTileIndex(sprite, tileIndex);
+}
