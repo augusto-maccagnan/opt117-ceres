@@ -36,17 +36,23 @@
  * 
  * TODO
  * ------------------------------ 
+ * [  ] BUG - Colisão do tiro falha as vezes
+ * [  ] BUG - Arrumar colisão quando player está movendo lateralmente (nave em um y superior ao tile de colisão)
+ * [  ] Áudio - PowerUp
+ * [  ] Chance de inimigos droparem vida (restaurar vida do player)
  * [  ] Chance de inimigos droparem power-ups
  * [  ] Power-ups
- * [  ] Inteligencia dos Inimigos
- * [  ] Spawn de inimigos
- * [  ] Corrigir sprite da nave
- * [TS] BUG - Colisão do tiro falha as vezes
+ * [  ] Áudio - Background
+ * [  ] Áudio - Tiro
+ * [  ] Áudio - Colisão Nave
  * [  ] Tela de Level Clear
  * [  ] Transição de levels
- * [  ] Implementação de novo level
- * [WIP] Inimigo do tipo UFO
- * [BUG] Arrumar colisão quando player está movendo lateralmente (nave em um y superior ao tile de colisão)
+ * [WIP] Inteligencia dos Inimigos
+ * [WIP] Implementação do RKT
+ * [WIP] Implementação lógica de tiro do UFO
+ * [OK] Corrigir sprite da nave
+ * [OK] Inimigo do tipo UFO
+ * [OK] Spawn de inimigos
  * [OK] Contabilizar dano no player -> Problema com a remoção de tiles do mapa
  * [OK] Tempo de imunidade do player
  * [OK] Tela de Game Over
