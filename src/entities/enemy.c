@@ -1,6 +1,7 @@
 #include <genesis.h>
 #include "enemy.h"
 #include "engine/level.h"
+#include "entities/player.h"
 
 // #define DEBUG
 
@@ -67,6 +68,7 @@ u16 ENEMY_init(GameObject* const obj, const MapObject* const mapobj, u16 ind) {
         y = screen_y - F32_toInt(mapobj->y) - SCREEN_H/3;
         GAMEOBJECT_init_no_pal(obj, &spr_kaz, x, y, 0, -4, PAL_ENEMY, kaz_index);
         obj->speed_y = mapobj->speed;
+        obj->speed = mapobj->speed;
         break;
     default:
         GAMEOBJECT_init_no_pal(obj, &spr_rkt, x, y, 0, -4, PAL_ENEMY, rkt_index);
@@ -195,11 +197,20 @@ void ENEMY_rkt_update(GameObject* obj) {
     GAMEOBJECT_update_boundbox(obj->x, obj->y, obj);
     GAMEOBJECT_set_hwsprite_position(obj);
 }
-
+// f16 angle;
 void ENEMY_kaz_update(GameObject* obj) {
     obj->x += obj->speed_x;
     obj->y += obj->speed_y;
-    
+    // kprintf("x:%d y:%d speed_x:%d", F16_toInt(obj->x), F16_toInt(obj->y), F16_toInt(obj->speed_x));
+    if(F16_toInt(obj->y) > 0 && F16_toInt(obj->y) < SCREEN_H){
+        // start seeking player
+        obj->speed_x = F16_mul(F16_cos(F16_atan2(obj->y - player.y, obj->x - player.x)), -obj->speed);
+    }
+
+    if(F16_toInt(obj->y) + obj->h > SCREEN_H){
+        obj->active = FALSE;
+    }
+
     GAMEOBJECT_update_boundbox(obj->x, obj->y, obj);
     GAMEOBJECT_set_hwsprite_position(obj);
 }

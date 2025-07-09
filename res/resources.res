@@ -20,4 +20,5 @@ PALETTE level_pal        "levels/level1/level1.pal"
 MAP     level1_map        "levels/level1/level1.tmx" map_layer BEST 0
 # Level 2 Resources
 MAP     level2_map        "levels/level2/lvl2.tmx" map_layer BEST 0
-OBJECTS level2_enemies    "levels/level2/lvl2_enemy.tmx" enemy_layer "x:f32;y:f32;speed:f16;enemy_type:u8;damage:u8" "sortby:y"
+# OBJECTS level2_enemies    "levels/level2/lvl2_enemy.tmx" enemy_layer "x:f32;y:f32;speed:f16;enemy_type:u8;damage:u8" "sortby:y"
+OBJECTS level2_enemies    "levels/level2/lvl2_enemy_dbg.tmx" enemy_layer "x:f32;y:f32;speed:f16;enemy_type:u8;damage:u8" "sortby:y"

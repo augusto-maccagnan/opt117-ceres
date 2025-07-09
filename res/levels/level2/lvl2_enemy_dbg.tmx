@@ -443,15 +443,7 @@
     <property name="speed" type="float" value="2"/>
    </properties>
   </object>
-  <object id="26" gid="3" x="89" y="6209" width="24" height="24">
-   <properties>
-    <property name="damage" type="int" value="1"/>
-    <property name="enemy_type" type="int" value="2"/>
-    <property name="exportPosition" type="bool" value="true"/>
-    <property name="speed" type="float" value="2"/>
-   </properties>
-  </object>
-  <object id="27" gid="3" x="220" y="6200" width="24" height="24">
+  <object id="26" gid="3" x="154" y="6220" width="24" height="24">
    <properties>
     <property name="damage" type="int" value="1"/>
     <property name="enemy_type" type="int" value="2"/>
