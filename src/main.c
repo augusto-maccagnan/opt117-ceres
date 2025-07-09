@@ -110,6 +110,23 @@ void init_enemies() {
 	ENEMY_load_tiles(ind);
 }
 
+// shoots pool
+#define MAX_SHOOTS 20
+GameObject shoot_array[MAX_SHOOTS];
+ObjectsPool shoot_pool;
+
+void init_shoots() {
+	OBJPOOL_init(&shoot_pool, shoot_array, LEN(shoot_array));
+
+	SHOOT_load_tiles(ind);
+}
+
+void shoot(GameObject* obj) {
+	GameObject* shoot = OBJPOOL_get_available(&shoot_pool);
+    if (!shoot) return;
+	SHOOT_init(shoot, F16_toInt(obj->x) - obj->w/2, F16_toInt(obj->y) - obj->h/2);
+}
+
 void spawn_enemies() {
 	// looks if there are enemies in spawn range
 	switch (current_level)
@@ -188,6 +205,7 @@ void game_init() {
 	PLAYER_init(ind);
 
 	init_enemies();
+	// init_shoots();
 }
 
 void game_next_level() {

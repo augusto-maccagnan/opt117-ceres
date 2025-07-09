@@ -27,7 +27,8 @@
         "sys.h": "c",
         "hud.h": "c",
         "stdio.h": "c",
-        "mapobjects.h": "c"
+        "mapobjects.h": "c",
+        "shoot.h": "c"
     },
     "gens.path": "C:\\gensKMod_073\\gens.exe"
 }
