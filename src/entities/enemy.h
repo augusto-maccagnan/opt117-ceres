@@ -4,6 +4,7 @@
 #include "resources.h"
 #include "engine/gameobject.h"
 #include "engine/mapobjects.h"
+#include "entities/shoot.h"
 
 #define ENEMY_UFO 0
 #define ENEMY_RKT  1

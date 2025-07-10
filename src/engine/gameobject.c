@@ -37,7 +37,7 @@ u16 GAMEOBJECT_init_no_pal(GameObject* const obj, const SpriteDefinition* const 
 	obj->speed_y = 0;
 	obj->anim = 0;
 	obj->speed = 0;
-
+	
 	obj->sprite = SPR_addSprite(sprite, x, y, TILE_ATTR_FULL(pal, FALSE, FALSE, 0, ind));
 
 	obj->w = obj->sprite->definition->w + w_offset;

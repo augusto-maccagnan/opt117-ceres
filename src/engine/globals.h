@@ -7,6 +7,7 @@
 // #define DEBUG
 
 extern char text[5];
+extern bool in_shoot;
 
 // GENERAL SCREEN CONFIG ////////////////////////////////
 
@@ -80,5 +81,9 @@ extern u8 current_level;
 #define PLAYER_SPEED45 FIX16(0.707 * 2)
 
 #define PLAYER_MAX_HEALTH 10
+
+// SHOOTING OBJECT CONFIG ///////////////////////////////////
+#define ALIED_SHOOT 0
+#define ENEMY_SHOOT 1
 
 #endif

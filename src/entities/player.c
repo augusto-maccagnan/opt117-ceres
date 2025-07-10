@@ -23,7 +23,7 @@ u8 immunity_time = 0;
 u16 PLAYER_init(u16 ind) {
 	
 	// initialize player
-	ind += GAMEOBJECT_init(&player, &spr_ship, SCREEN_W/2-12, SCREEN_H/2-12, 0, 0, PAL_PLAYER, ind);
+	ind += GAMEOBJECT_init(&player, &spr_ship, SCREEN_W/2-12, SCREEN_H/2-12, -8, -8, PAL_PLAYER, ind);
 	player.health = PLAYER_MAX_HEALTH;
 
 	// initialize shots
@@ -65,7 +65,8 @@ void PLAYER_update() {
 	SHOTS_update();
 
 	// update VDP/SGDK
-	SPR_setPosition(player.sprite, F16_toInt(player.x), F16_toInt(player.y));
+	// SPR_setPosition(player.sprite, F16_toInt(player.x), F16_toInt(player.y));
+	GAMEOBJECT_set_hwsprite_position(&player);
 	SPR_setAnim(player.sprite, player.anim);
 }
 
@@ -266,8 +267,8 @@ void PLAYER_shoot() {
 			// if the shot is not active (data == 0), set it up
 			if (!shots[i].active) {
 				shots[i].active = TRUE;
-				shots[i].x = player.x + FIX16(player.w/2 - 4);
-				shots[i].y = player.y + FIX16(player.h/2 - 4);
+				shots[i].x = player.x + FIX16(player.w/2);
+				shots[i].y = player.y + FIX16(player.h/2 - player.h_offset);
 				shots[i].speed_x = 0;
 				shots[i].speed_y = -FIX16(SHOOT_SPEED); // horizontal shot
 				shots[i].anim = 0; // default animation
@@ -286,7 +287,8 @@ void SHOTS_update() {
 			shots[i].x += shots[i].speed_x;
 			shots[i].y += shots[i].speed_y;
 
-			SPR_setPosition(shots[i].sprite, F16_toInt(shots[i].x), F16_toInt(shots[i].y));
+			GAMEOBJECT_set_hwsprite_position(&shots[i]);
+			// SPR_setPosition(shots[i].sprite, F16_toInt(shots[i].x), F16_toInt(shots[i].y));
 			// check if bullet is outside the screen
 			if(!(shots[i].y > 0 && shots[i].y < FIX16(SCREEN_H))){
 				SPR_setVisibility(shots[i].sprite, HIDDEN);

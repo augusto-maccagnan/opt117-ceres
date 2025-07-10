@@ -1,5 +1,7 @@
-#include "objects_pool.h"
+#include "engine/objects_pool.h"
 #include "engine/utils.h"
+
+// #define DEBUG
 
 /////////////////////////////////////////////////////////////////////
 // LINKED LIST OP
@@ -80,8 +82,10 @@ void OBJPOOL_init(ObjectsPool* pool, GameObject* array, u8 n) {
     array->dir = n-1;       // ID for testing
     array->next = NULL;
 
+    #ifdef DEBUG
     LINKEDLIST_print(pool->free);
     LINKEDLIST_print(pool->active);
+    #endif
 }
 
 

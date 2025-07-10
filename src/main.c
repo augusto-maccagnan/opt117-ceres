@@ -81,8 +81,8 @@
 
 #include "entities/player.h"
 #include "entities/enemy.h"
+#include "entities/shoot.h"
 
-// IF DEBUGGING  CHANGE MAP IN resources.res to DEBUG MAP
 // #define DEBUG
 
 // index for tiles in VRAM (first tile reserved for SGDK)
@@ -107,7 +107,7 @@ void init_enemies() {
 
 	// load enemy tiles
 	// enemy_tiles_ind = ind;
-	ENEMY_load_tiles(ind);
+	ind += ENEMY_load_tiles(ind);
 }
 
 // shoots pool
@@ -118,13 +118,14 @@ ObjectsPool shoot_pool;
 void init_shoots() {
 	OBJPOOL_init(&shoot_pool, shoot_array, LEN(shoot_array));
 
-	SHOOT_load_tiles(ind);
+	ind += SHOOT_load_tiles(ind);
 }
 
-void shoot(GameObject* obj) {
+void shoot(GameObject* obj, u8 type) {
 	GameObject* shoot = OBJPOOL_get_available(&shoot_pool);
     if (!shoot) return;
-	SHOOT_init(shoot, F16_toInt(obj->x) - obj->w/2, F16_toInt(obj->y) - obj->h/2);
+	SHOOT_init(shoot, F16_toInt(obj->x) + obj->w/3, F16_toInt(obj->y) + obj->h/2 + obj->h_offset, type);
+	shoot->damage = obj->damage;
 }
 
 void spawn_enemies() {
@@ -178,39 +179,31 @@ void init_state() {
 void game_init() {
 	init_state();
 
-	#ifdef DEBUG
-	level_rooms = DBG;
-	#endif
 	VDP_setScreenWidth320();
 	SPR_init();
 	SYS_showFrameLoad(true);
 
 	// init BACKGROUND, LEVEL AND HUD ///////////////////////////////
-
-	#ifdef DEBUG
-	VDP_setTextPlane(BG_BACKGROUND);
-	#else	
+	
 	ind += BACKGROUND_init(ind);
 	ind += HUD_init(ind);
-	#endif
+
 
 	ind += LEVEL_init(ind, level_rooms);
 	
-	#ifdef DEBUG
-	LEVEL_draw_map(level_rooms);
-	#endif
 	
 	// init GAME OBJECTS ////////////////////////////////////////////
 
 	PLAYER_init(ind);
 
+	init_shoots();
 	init_enemies();
-	// init_shoots();
 }
 
 void game_next_level() {
 	// show transition screen
 	
+	// start a timer and load everything
 	SPR_reset();
 	ind = TILE_USER_INDEX; // reset index for tiles in VRAM
 	//
@@ -220,7 +213,9 @@ void game_next_level() {
 		game_state = GAME_CLEAR;
 		return;
 	}
+	#ifdef DEBUG
 	kprintf("Next level: %d", current_level);
+	#endif
 
 	ind += BACKGROUND_init(ind);
 	ind += HUD_init(ind);
@@ -247,8 +242,10 @@ void game_next_level() {
 	
 	PLAYER_init(ind);
 
+	init_shoots();
 	init_enemies();
-	// sleep(500);
+
+	// stay showing image for the time and 
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -258,6 +255,9 @@ inline void update_enemies() {
 	GameObject* obj = OBJPOOL_loop_init(&enemy_pool);
 	while (obj) {
 		obj->update(obj);
+		if(in_shoot){
+			shoot(obj, ENEMY_SHOOT);
+		}
 		GameObject* obj_to_release = NULL;
 
 		if (GAMEOBJECT_check_collision(&player, obj)) {
@@ -305,11 +305,36 @@ inline void update_enemies() {
 	}
 }
 
+inline void update_shots() {
+	GameObject* obj = OBJPOOL_loop_init(&shoot_pool);
+	while (obj) {
+		obj->update(obj);
+
+		GameObject* obj_to_release = NULL;
+
+		if (GAMEOBJECT_check_collision(&player, obj)) {
+			PLAYER_damage(obj->damage);
+			obj_to_release = obj;
+		}
+
+		// shoot inactivation, by going out of screen
+		if(!obj->active){
+			obj_to_release = obj;
+		}
+
+		obj = OBJPOOL_loop_next(&shoot_pool);
+		if (obj_to_release) {
+			OBJPOOL_release(&shoot_pool, obj_to_release);
+		}
+	}
+}
+
 static inline void game_update() {
 	update_input();
 
 	PLAYER_update();
 	update_enemies();
+	update_shots();
 
 	spawn_enemies();
 	#ifndef DEBUG

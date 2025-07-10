@@ -1,7 +1,7 @@
 #include <genesis.h>
 #include "enemy.h"
 #include "engine/level.h"
-#include "entities/player.h"
+#include "player.h"
 
 // #define DEBUG
 
@@ -67,7 +67,7 @@ u16 ENEMY_init(GameObject* const obj, const MapObject* const mapobj, u16 ind) {
     case ENEMY_KAZ:
         y = screen_y - F32_toInt(mapobj->y) - SCREEN_H/3;
         GAMEOBJECT_init_no_pal(obj, &spr_kaz, x, y, 0, -4, PAL_ENEMY, kaz_index);
-        obj->speed_y = mapobj->speed;
+        obj->speed_y = F16(1);
         obj->speed = mapobj->speed;
         break;
     default:
@@ -111,6 +111,7 @@ u16 ENEMY_init(GameObject* const obj, const MapObject* const mapobj, u16 ind) {
 // GAME LOOP/LOGIC
 
 void ENEMY_ufo_update(GameObject* obj) {
+    in_shoot = false;
     if(!obj->active) {
         // if object is not active, do nothing
         return;
@@ -176,6 +177,8 @@ void ENEMY_ufo_update(GameObject* obj) {
         // shooting timer for UFO, every 1 second
         obj->timer++;
         if(obj->timer % 60 == 0){
+            in_shoot = true;
+            // shoot(obj);
             // UFO_shoot() || SHOT_init(x, y, speed_x, speed_y)
             // UFO_shoot();
             // kprintf("UFO should shoot!");
@@ -187,6 +190,7 @@ void ENEMY_ufo_update(GameObject* obj) {
 }
 
 void ENEMY_rkt_update(GameObject* obj) {
+    in_shoot = false;
     obj->x += obj->speed_x;
     obj->y += obj->speed_y;
     
@@ -199,13 +203,22 @@ void ENEMY_rkt_update(GameObject* obj) {
 }
 // f16 angle;
 void ENEMY_kaz_update(GameObject* obj) {
+    in_shoot = false;
     obj->x += obj->speed_x;
     obj->y += obj->speed_y;
     // kprintf("x:%d y:%d speed_x:%d", F16_toInt(obj->x), F16_toInt(obj->y), F16_toInt(obj->speed_x));
-    if(F16_toInt(obj->y) > 0 && F16_toInt(obj->y) < SCREEN_H){
-        // start seeking player
-        obj->speed_x = F16_mul(F16_cos(F16_atan2(obj->y - player.y, obj->x - player.x)), -obj->speed);
+    if(obj->x > player.x) {
+        obj->speed_x += -F16(0.05);
+    } else if(obj->x < player.x) {
+        obj->speed_x += F16(0.05);
+    } else {
+        obj->speed_x = 0;
     }
+    // obj->speed_x = F16_div((player.x - obj->x), F16(100));
+    // if(F16_toInt(obj->y) > 0 && F16_toInt(obj->y) < SCREEN_H){
+    //     // start seeking player
+        // obj->speed_x = F16_mul(F16_cos(F16_atan2(obj->y - player.y, obj->x - player.x)), -obj->speed);
+    // }
 
     if(F16_toInt(obj->y) + obj->h > SCREEN_H){
         obj->active = FALSE;
@@ -261,7 +274,6 @@ static void frame_changed(Sprite* sprite) {
         return;
         break;
     }
-    // u16 tileIndex = ball_indexes[sprite->animInd][sprite->frameInd];
     // manually set tile index for the current frame (preloaded in VRAM)
     SPR_setVRAMTileIndex(sprite, tileIndex);
 }
