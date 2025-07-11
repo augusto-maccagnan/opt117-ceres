@@ -29,7 +29,7 @@ extern u8 collision_map[SCREEN_METATILES_W][(SCREEN_METATILES_H * (MAX_ROOMS))];
 
 // screen cell position in map
 extern u16 screen_x;
-extern u16 screen_y;
+extern u32 screen_y;
 
 extern u8 collision_result;
 extern u8 update_tiles_in_VDP;

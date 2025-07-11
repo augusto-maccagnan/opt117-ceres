@@ -88,6 +88,9 @@
 // index for tiles in VRAM (first tile reserved for SGDK)
 u16 ind = TILE_USER_INDEX;
 
+// transition timer
+u8 transition_timer;
+
 enum NUMBER_OF_ROOMS level_rooms;
 enum GAME_STATE game_state;
 
@@ -129,6 +132,7 @@ void shoot(GameObject* obj, u8 type) {
 }
 
 void spawn_enemies() {
+	MapObject* mapobj;
 	// looks if there are enemies in spawn range
 	switch (current_level)
 	{
@@ -136,7 +140,7 @@ void spawn_enemies() {
 		break;
 	case 2:
 		// entering level 2, start spawning enemies
-		MapObject* mapobj = MAPOBJ_lookup_enemies(level2_enemies, LEN(level2_enemies));
+		mapobj = MAPOBJ_lookup_enemies(level2_enemies, LEN(level2_enemies));
 		while(mapobj){
 			// looks for an available space in the enemy pool
 			GameObject* enemy = OBJPOOL_get_available(&enemy_pool);
@@ -147,6 +151,16 @@ void spawn_enemies() {
 			mapobj = MAPOBJ_lookup_enemies(level2_enemies, LEN(level2_enemies));
 		}
 	case 3:
+		mapobj = MAPOBJ_lookup_enemies(level3_enemies, LEN(level3_enemies));
+		while(mapobj){
+			// looks for an available space in the enemy pool
+			GameObject* enemy = OBJPOOL_get_available(&enemy_pool);
+			if (!enemy) return;
+			// Enemy factory function: It gets the needed data from MapObject
+			// ENEMY_init(enemy, mapobj, enemy_tiles_ind);
+			ENEMY_init(enemy, mapobj, ind);
+			mapobj = MAPOBJ_lookup_enemies(level3_enemies, LEN(level3_enemies));
+		}
 		break;
 	case 4:
 		break;
@@ -173,52 +187,28 @@ void init_state() {
 
 	// set current level
 	current_level = 1;
-}
 
-
-void game_init() {
-	init_state();
-
-	VDP_setScreenWidth320();
-	SPR_init();
-	SYS_showFrameLoad(true);
-
-	// init BACKGROUND, LEVEL AND HUD ///////////////////////////////
-	
-	ind += BACKGROUND_init(ind);
-	ind += HUD_init(ind);
-
-
-	ind += LEVEL_init(ind, level_rooms);
-	
-	
-	// init GAME OBJECTS ////////////////////////////////////////////
-
-	PLAYER_init(ind);
-
-	init_shoots();
-	init_enemies();
+	player.health = PLAYER_MAX_HEALTH;
 }
 
 void game_next_level() {
-	// show transition screen
-	
-	// start a timer and load everything
+	transition_timer = 0;
+	// reset the sprites
 	SPR_reset();
+	OBJPOOL_clear(&enemy_pool);
 	ind = TILE_USER_INDEX; // reset index for tiles in VRAM
-	//
+
+	// increment current level
 	current_level++;
+	// show transition screen
 	if (current_level > 4) {
-		current_level = 1;
+		current_level = 0;
 		game_state = GAME_CLEAR;
 		return;
 	}
 	#ifdef DEBUG
 	kprintf("Next level: %d", current_level);
 	#endif
-
-	ind += BACKGROUND_init(ind);
-	ind += HUD_init(ind);
 	//
 	switch (current_level)
 	{
@@ -234,18 +224,46 @@ void game_next_level() {
 	case 4:
 		level_rooms = LEVEL4;
 		break;
+	case 5:
+		level_rooms = LEVEL5;
+		break;
 	default:
 		break;
 	}
-	// level_rooms = LEVEL2;
+	ind += SCREEN_level_transition(current_level, ind);
+	ind += BACKGROUND_init(ind);
 	ind += LEVEL_init(ind, level_rooms);
-	
+	// holds transition screen for 3 seconds
+	while(transition_timer < (60*2)){
+		transition_timer++;
+		SPR_update();
+        SYS_doVBlankProcess();
+	}
+	ind += HUD_init(ind);
 	PLAYER_init(ind);
-
 	init_shoots();
 	init_enemies();
 
-	// stay showing image for the time and 
+	HUD_update_health(player.health);
+
+	game_state = GAME_PLAYING;
+}
+
+void game_init() {
+	init_state();
+
+	VDP_setScreenWidth320();
+	VDP_setPlaneSize(64, 64, TRUE);
+	SPR_init();
+	
+	SYS_showFrameLoad(true);
+	
+	// show menu screen
+	SCREEN_menu();
+
+	current_level = 0;
+
+	game_next_level();
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -337,9 +355,8 @@ static inline void game_update() {
 	update_shots();
 
 	spawn_enemies();
-	#ifndef DEBUG
 	BACKGROUND_update();
-	#endif
+
 
 	LEVEL_update_camera(&player, level_rooms);
 }
@@ -355,25 +372,23 @@ int main(bool resetType) {
 	SYS_showFrameLoad(true);
 	
 	SYS_doVBlankProcess();
-	
+
 	while (true) {
 		switch (game_state) {
 		case GAME_INIT:
 			game_init();
-			game_state = GAME_PLAYING;
 			break;
 		case GAME_OVER:
-				SCREEN_over_update();
-				game_state = GAME_INIT;
-				break;
+			SCREEN_over_update();
+			break;
 		case GAME_PLAYING:
 			game_update();
 			break;
 		case GAME_NEXT_LEVEL:
 			game_next_level();
-			game_state = GAME_PLAYING;
 			break;
 		case GAME_CLEAR:
+			SCREEN_game_clear_update();
 			break;
 		}	
 		SPR_update();

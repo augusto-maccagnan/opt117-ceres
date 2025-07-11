@@ -19,6 +19,7 @@ enum NUMBER_OF_ROOMS {
     LEVEL2 = 30,
     LEVEL3 = 40,
     LEVEL4 = 50,
+    LEVEL5 = 50,
     DBG = 30
 };
 

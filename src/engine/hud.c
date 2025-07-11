@@ -16,12 +16,11 @@ u16 HUD_init(u16 ind) {
 	VDP_setWindowVPos(FALSE, HUD_TILES);
 	
 	VDP_drawImageEx(WINDOW, &img_hud, TILE_ATTR_FULL(PAL_BACKGROUND, 1, 0, 0, ind), 0, 0, FALSE, DMA);
-	ind += img_hud.tileset->numTile;
 	
 	VDP_drawText("HEALTH|----------|  SCORE 1337 UP ----", 1, 0);
 	HUD_score(0);
 
-    return ind;
+    return img_hud.tileset->numTile;
 }
 
 void HUD_update_health(u8 value) {

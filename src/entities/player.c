@@ -24,7 +24,6 @@ u16 PLAYER_init(u16 ind) {
 	
 	// initialize player
 	ind += GAMEOBJECT_init(&player, &spr_ship, SCREEN_W/2-12, SCREEN_H/2-12, -8, -8, PAL_PLAYER, ind);
-	player.health = PLAYER_MAX_HEALTH;
 
 	// initialize shots
 	shoot_count = 0;
@@ -252,10 +251,16 @@ void PLAYER_damage(u8 damage) {
 
 void PLAYER_immunity_update() {
 	if(immunity) {
+		if(immunity_time % 5 == 0){
+			// blink player sprite
+			SPR_setVisibility(player.sprite, !SPR_getVisibility(player.sprite));
+		}
 		if(immunity_time == 0) {
 			immunity = false;
 		}
 		--immunity_time;
+	} else if(!SPR_getVisibility(player.sprite)) {
+		SPR_setVisibility(player.sprite, VISIBLE);
 	}
 }
 

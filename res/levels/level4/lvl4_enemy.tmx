@@ -611,5 +611,21 @@
     <property name="speed" type="float" value="3"/>
    </properties>
   </object>
+  <object id="133" gid="5" x="-32" y="272" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="1"/>
+    <property name="enemy_type" type="int" value="0"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="3"/>
+   </properties>
+  </object>
+  <object id="134" gid="5" x="336" y="272" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="1"/>
+    <property name="enemy_type" type="int" value="0"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="3"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

@@ -9,7 +9,6 @@ s16 values[SCREEN_TILES_W/2] = {0};
 // INIT
 
 u16 BACKGROUND_init(u16 ind) {
-	VDP_setPlaneSize(64, 64, TRUE);
 
 	VDP_drawImageEx(BG_BACKGROUND, &img_background, TILE_ATTR_FULL(PAL_BACKGROUND, 0, 0, 0, ind), 0, 0, TRUE, DMA);
 	

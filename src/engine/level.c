@@ -14,7 +14,7 @@ u8 collision_map[SCREEN_METATILES_W][(SCREEN_METATILES_H * (MAX_ROOMS))] = {0}; 
 
 // Top-Left screen position in map
 u16 screen_x = 0;
-u16 screen_y = (MAX_ROOMS-1)*SCREEN_H;
+u32 screen_y = (MAX_ROOMS-1)*SCREEN_H;
 
 u8 collision_result;
 u8 update_tiles_in_VDP = false;
@@ -47,14 +47,17 @@ u16 LEVEL_init(u16 ind, u8 rooms) {
 		map = MAP_create(&level2_map, BG_MAP, TILE_ATTR_FULL(PAL_MAP, FALSE, FALSE, FALSE, ind));
 		break;
 	case 3:
-		// VDP_loadTileSet(&level3_tiles, ind, DMA);
-		// map = MAP_create(&level3_map, BG_MAP, TILE_ATTR_FULL(PAL_MAP, FALSE, FALSE, FALSE, ind));
+		map = MAP_create(&level3_map, BG_MAP, TILE_ATTR_FULL(PAL_MAP, FALSE, FALSE, FALSE, ind));
 		break;
+	case 4:
+		map = MAP_create(&level4_map, BG_MAP, TILE_ATTR_FULL(PAL_MAP, FALSE, FALSE, FALSE, ind));
+		break;
+	// case 5:
+	// 	map = MAP_create(&level5_map, BG_MAP, TILE_ATTR_FULL(PAL_MAP, FALSE, FALSE, FALSE, ind));
+	// 	break;
 	default:
 		break;
 	}
-	// VDP_loadTileSet(&level1_tiles, ind, DMA);
-	// map = MAP_create(&level1_map, BG_MAP, TILE_ATTR_FULL(PAL_MAP, FALSE, FALSE, FALSE, ind));
 
 	MAP_scrollToEx(map, 0, (rooms-1)*SCREEN_H, TRUE);
 	
@@ -386,8 +389,10 @@ void LEVEL_scroll_update(s16 offset_x, s16 offset_y, u8 rooms) {
 	// move to next room and generate collision map
 	screen_x += offset_x;
 	screen_y += offset_y;
-	if(screen_y >= 0 && screen_y <= SCROLLING_SPEED*2){
+	if(screen_y <= SCROLLING_SPEED*2){
+		#ifdef DEBUG
 		kprintf("GAME NEXT LEVEL");
+		#endif
 		game_state = GAME_NEXT_LEVEL;
 		return;
 	}
