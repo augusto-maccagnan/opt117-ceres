@@ -87,4 +87,9 @@ extern u8 current_level;
 #define ALIED_SHOOT 0
 #define ENEMY_SHOOT 1
 
+// SOUND EFFECTS
+
+#define SFX_LASER 64
+#define SFX_EXPLOSION 65
+
 #endif

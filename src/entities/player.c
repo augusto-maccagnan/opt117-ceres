@@ -243,6 +243,8 @@ void PLAYER_damage(u8 damage) {
 	HUD_update_health(player.health);
 	if (player.health <= 0) {
 		player.health = 0;
+		// XGM_startPlayPCM(SFX_EXPLOSION, 1,SOUND_PCM_CH3);
+		XGM2_playPCM(sfx_explosion, sizeof(sfx_shoot), SOUND_PCM_CH_AUTO);
 		game_state = GAME_OVER;
 	}
 	immunity = true;
@@ -259,7 +261,7 @@ void PLAYER_immunity_update() {
 			immunity = false;
 		}
 		--immunity_time;
-	} else if(!SPR_getVisibility(player.sprite)) {
+	} else if(SPR_getVisibility(player.sprite) == HIDDEN) {
 		SPR_setVisibility(player.sprite, VISIBLE);
 	}
 }
@@ -278,6 +280,8 @@ void PLAYER_shoot() {
 				shots[i].speed_y = -FIX16(SHOOT_SPEED); // horizontal shot
 				shots[i].anim = 0; // default animation
 				SPR_setVisibility(shots[i].sprite, VISIBLE);
+				// XGM_startPlayPCM(SFX_LASER,1,SOUND_PCM_CH4);
+				XGM2_playPCM(sfx_shoot, sizeof(sfx_shoot), SOUND_PCM_CH_AUTO);
 				shoot_count++;
 				break;
 			}

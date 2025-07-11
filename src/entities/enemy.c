@@ -93,7 +93,7 @@ u16 ENEMY_init(GameObject* const obj, const MapObject* const mapobj, u16 ind) {
             obj->update = ENEMY_ufo_update;
             kprintf("ERROR: MAPOBJECTS - unknow enemy type %d. Default to ENEMY_UFO.", mapobj->type);
         }
-    obj->on_hit = ENEMY_on_hit;
+    // obj->on_hit = ENEMY_on_hit;
 
     obj->type = mapobj->type;
     obj->timer = 0;
@@ -178,10 +178,6 @@ void ENEMY_ufo_update(GameObject* obj) {
         obj->timer++;
         if(obj->timer % 60 == 0){
             in_shoot = true;
-            // shoot(obj);
-            // UFO_shoot() || SHOT_init(x, y, speed_x, speed_y)
-            // UFO_shoot();
-            // kprintf("UFO should shoot!");
             obj->timer = 0;
         }
     }
@@ -201,7 +197,7 @@ void ENEMY_rkt_update(GameObject* obj) {
     GAMEOBJECT_update_boundbox(obj->x, obj->y, obj);
     GAMEOBJECT_set_hwsprite_position(obj);
 }
-// f16 angle;
+
 void ENEMY_kaz_update(GameObject* obj) {
     in_shoot = false;
     obj->x += obj->speed_x;
@@ -228,9 +224,22 @@ void ENEMY_kaz_update(GameObject* obj) {
     GAMEOBJECT_set_hwsprite_position(obj);
 }
 
-void ENEMY_on_hit(GameObject* obj, u8 amount) {
-    KLog("Enemy hit!");
-}
+// void ENEMY_on_hit(GameObject* obj) {
+//     u8 number = random() % 100;
+
+//     // drop power-up 1: 10%
+//     if(number < 10){
+
+//     } else
+//     // drop power-up 2: 5%
+//     if(number < 15){
+
+//     } else 
+//     // drop power-up 3: 3%
+//     if(number < 18){
+        
+//     }
+// }
 
 // Much worst performer...
 // void ENEMY_update2(GameObject* obj) {

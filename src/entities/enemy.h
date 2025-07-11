@@ -24,7 +24,7 @@ u16 ENEMY_init(GameObject* const obj, const MapObject* const mapobj, u16 ind);
 void ENEMY_ufo_update(GameObject* obj);
 void ENEMY_rkt_update(GameObject* obj);
 void ENEMY_kaz_update(GameObject* obj);
-void ENEMY_on_hit(GameObject* obj, u8 amount);
+// void ENEMY_on_hit(GameObject* obj);
 
 ////////////////////////////////////////////////////////////////////////////
 // PRIVATE MEMBERS

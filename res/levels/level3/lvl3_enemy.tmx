@@ -1,9 +1,150 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="420" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="135">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="560" tilewidth="16" tileheight="16" infinite="0" nextlayerid="3" nextobjectid="228">
  <tileset firstgid="1" source="ceres_tiles.tsx"/>
  <tileset firstgid="3" source="enemy_markers.tsx"/>
- <layer id="1" name="map_layer" width="20" height="420">
+ <tileset firstgid="6" source="../level4/enemy_markers.tsx"/>
+ <layer id="1" name="map_layer" width="20" height="560">
   <data encoding="csv">
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
 1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
 1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
@@ -427,135 +568,7 @@
 </data>
  </layer>
  <objectgroup id="2" name="enemy_layer">
-  <object id="1" gid="5" x="-32" y="6096" width="24" height="24">
-   <properties>
-    <property name="damage" type="int" value="1"/>
-    <property name="enemy_type" type="int" value="0"/>
-    <property name="exportPosition" type="bool" value="true"/>
-    <property name="speed" type="float" value="3"/>
-   </properties>
-  </object>
-  <object id="2" gid="5" x="336" y="6320" width="24" height="24">
-   <properties>
-    <property name="damage" type="int" value="1"/>
-    <property name="enemy_type" type="int" value="0"/>
-    <property name="exportPosition" type="bool" value="true"/>
-    <property name="speed" type="float" value="3"/>
-   </properties>
-  </object>
-  <object id="79" gid="5" x="336" y="5872" width="24" height="24">
-   <properties>
-    <property name="damage" type="int" value="1"/>
-    <property name="enemy_type" type="int" value="0"/>
-    <property name="exportPosition" type="bool" value="true"/>
-    <property name="speed" type="float" value="3"/>
-   </properties>
-  </object>
-  <object id="81" gid="5" x="336" y="5568" width="24" height="24">
-   <properties>
-    <property name="damage" type="int" value="1"/>
-    <property name="enemy_type" type="int" value="0"/>
-    <property name="exportPosition" type="bool" value="true"/>
-    <property name="speed" type="float" value="3"/>
-   </properties>
-  </object>
-  <object id="84" gid="5" x="-32" y="4992" width="24" height="24">
-   <properties>
-    <property name="damage" type="int" value="1"/>
-    <property name="enemy_type" type="int" value="0"/>
-    <property name="exportPosition" type="bool" value="true"/>
-    <property name="speed" type="float" value="3"/>
-   </properties>
-  </object>
-  <object id="88" gid="5" x="384" y="4992" width="24" height="24">
-   <properties>
-    <property name="damage" type="int" value="1"/>
-    <property name="enemy_type" type="int" value="0"/>
-    <property name="exportPosition" type="bool" value="true"/>
-    <property name="speed" type="float" value="3"/>
-   </properties>
-  </object>
-  <object id="94" gid="5" x="336" y="4320" width="24" height="24">
-   <properties>
-    <property name="damage" type="int" value="1"/>
-    <property name="enemy_type" type="int" value="0"/>
-    <property name="exportPosition" type="bool" value="true"/>
-    <property name="speed" type="float" value="3"/>
-   </properties>
-  </object>
-  <object id="99" gid="5" x="-32" y="3872" width="24" height="24">
-   <properties>
-    <property name="damage" type="int" value="1"/>
-    <property name="enemy_type" type="int" value="0"/>
-    <property name="exportPosition" type="bool" value="true"/>
-    <property name="speed" type="float" value="3"/>
-   </properties>
-  </object>
   <object id="100" gid="5" x="336" y="3424" width="24" height="24">
-   <properties>
-    <property name="damage" type="int" value="1"/>
-    <property name="enemy_type" type="int" value="0"/>
-    <property name="exportPosition" type="bool" value="true"/>
-    <property name="speed" type="float" value="3"/>
-   </properties>
-  </object>
-  <object id="104" gid="5" x="-80" y="2976" width="24" height="24">
-   <properties>
-    <property name="damage" type="int" value="1"/>
-    <property name="enemy_type" type="int" value="0"/>
-    <property name="exportPosition" type="bool" value="true"/>
-    <property name="speed" type="float" value="3"/>
-   </properties>
-  </object>
-  <object id="105" gid="5" x="-32" y="2976" width="24" height="24">
-   <properties>
-    <property name="damage" type="int" value="1"/>
-    <property name="enemy_type" type="int" value="0"/>
-    <property name="exportPosition" type="bool" value="true"/>
-    <property name="speed" type="float" value="3"/>
-   </properties>
-  </object>
-  <object id="111" gid="5" x="336" y="2304" width="24" height="24">
-   <properties>
-    <property name="damage" type="int" value="1"/>
-    <property name="enemy_type" type="int" value="0"/>
-    <property name="exportPosition" type="bool" value="true"/>
-    <property name="speed" type="float" value="3"/>
-   </properties>
-  </object>
-  <object id="112" gid="5" x="384" y="2304" width="24" height="24">
-   <properties>
-    <property name="damage" type="int" value="1"/>
-    <property name="enemy_type" type="int" value="0"/>
-    <property name="exportPosition" type="bool" value="true"/>
-    <property name="speed" type="float" value="3"/>
-   </properties>
-  </object>
-  <object id="115" gid="5" x="336" y="1856" width="24" height="24">
-   <properties>
-    <property name="damage" type="int" value="1"/>
-    <property name="enemy_type" type="int" value="0"/>
-    <property name="exportPosition" type="bool" value="true"/>
-    <property name="speed" type="float" value="3"/>
-   </properties>
-  </object>
-  <object id="116" gid="5" x="384" y="1856" width="24" height="24">
-   <properties>
-    <property name="damage" type="int" value="1"/>
-    <property name="enemy_type" type="int" value="0"/>
-    <property name="exportPosition" type="bool" value="true"/>
-    <property name="speed" type="float" value="3"/>
-   </properties>
-  </object>
-  <object id="117" gid="5" x="-80" y="1632" width="24" height="24">
-   <properties>
-    <property name="damage" type="int" value="1"/>
-    <property name="enemy_type" type="int" value="0"/>
-    <property name="exportPosition" type="bool" value="true"/>
-    <property name="speed" type="float" value="3"/>
-   </properties>
-  </object>
-  <object id="118" gid="5" x="-32" y="1632" width="24" height="24">
    <properties>
     <property name="damage" type="int" value="1"/>
     <property name="enemy_type" type="int" value="0"/>
@@ -579,7 +592,7 @@
     <property name="speed" type="float" value="3"/>
    </properties>
   </object>
-  <object id="123" gid="5" x="-80" y="960" width="24" height="24">
+  <object id="124" gid="5" x="432" y="1184" width="24" height="24">
    <properties>
     <property name="damage" type="int" value="1"/>
     <property name="enemy_type" type="int" value="0"/>
@@ -587,7 +600,7 @@
     <property name="speed" type="float" value="3"/>
    </properties>
   </object>
-  <object id="124" gid="5" x="-32" y="960" width="24" height="24">
+  <object id="135" gid="5" x="-144" y="1632" width="24" height="24">
    <properties>
     <property name="damage" type="int" value="1"/>
     <property name="enemy_type" type="int" value="0"/>
@@ -595,7 +608,7 @@
     <property name="speed" type="float" value="3"/>
    </properties>
   </object>
-  <object id="125" gid="5" x="336" y="848" width="24" height="24">
+  <object id="136" gid="5" x="-96" y="1632" width="24" height="24">
    <properties>
     <property name="damage" type="int" value="1"/>
     <property name="enemy_type" type="int" value="0"/>
@@ -603,7 +616,7 @@
     <property name="speed" type="float" value="3"/>
    </properties>
   </object>
-  <object id="129" gid="5" x="-32" y="624" width="24" height="24">
+  <object id="137" gid="5" x="-48" y="1632" width="24" height="24">
    <properties>
     <property name="damage" type="int" value="1"/>
     <property name="enemy_type" type="int" value="0"/>
@@ -611,7 +624,7 @@
     <property name="speed" type="float" value="3"/>
    </properties>
   </object>
-  <object id="133" gid="5" x="-32" y="272" width="24" height="24">
+  <object id="138" gid="5" x="352" y="2096" width="24" height="24">
    <properties>
     <property name="damage" type="int" value="1"/>
     <property name="enemy_type" type="int" value="0"/>
@@ -619,12 +632,636 @@
     <property name="speed" type="float" value="3"/>
    </properties>
   </object>
-  <object id="134" gid="5" x="336" y="272" width="24" height="24">
+  <object id="139" gid="5" x="400" y="2096" width="24" height="24">
    <properties>
     <property name="damage" type="int" value="1"/>
     <property name="enemy_type" type="int" value="0"/>
     <property name="exportPosition" type="bool" value="true"/>
     <property name="speed" type="float" value="3"/>
+   </properties>
+  </object>
+  <object id="140" gid="5" x="448" y="2096" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="1"/>
+    <property name="enemy_type" type="int" value="0"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="3"/>
+   </properties>
+  </object>
+  <object id="141" gid="5" x="-160" y="2736" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="1"/>
+    <property name="enemy_type" type="int" value="0"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="3"/>
+   </properties>
+  </object>
+  <object id="142" gid="5" x="-112" y="2736" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="1"/>
+    <property name="enemy_type" type="int" value="0"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="3"/>
+   </properties>
+  </object>
+  <object id="143" gid="5" x="-64" y="2736" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="1"/>
+    <property name="enemy_type" type="int" value="0"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="3"/>
+   </properties>
+  </object>
+  <object id="144" gid="5" x="384" y="3424" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="1"/>
+    <property name="enemy_type" type="int" value="0"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="3"/>
+   </properties>
+  </object>
+  <object id="145" gid="5" x="432" y="3424" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="1"/>
+    <property name="enemy_type" type="int" value="0"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="3"/>
+   </properties>
+  </object>
+  <object id="146" gid="5" x="480" y="3424" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="1"/>
+    <property name="enemy_type" type="int" value="0"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="3"/>
+   </properties>
+  </object>
+  <object id="147" gid="5" x="-160" y="4144" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="1"/>
+    <property name="enemy_type" type="int" value="0"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="3"/>
+   </properties>
+  </object>
+  <object id="148" gid="5" x="-112" y="4144" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="1"/>
+    <property name="enemy_type" type="int" value="0"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="3"/>
+   </properties>
+  </object>
+  <object id="149" gid="5" x="-64" y="4144" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="1"/>
+    <property name="enemy_type" type="int" value="0"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="3"/>
+   </properties>
+  </object>
+  <object id="150" gid="5" x="352" y="4560" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="1"/>
+    <property name="enemy_type" type="int" value="0"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="3"/>
+   </properties>
+  </object>
+  <object id="151" gid="5" x="400" y="4560" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="1"/>
+    <property name="enemy_type" type="int" value="0"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="3"/>
+   </properties>
+  </object>
+  <object id="152" gid="5" x="448" y="4560" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="1"/>
+    <property name="enemy_type" type="int" value="0"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="3"/>
+   </properties>
+  </object>
+  <object id="153" gid="5" x="-160" y="4992" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="1"/>
+    <property name="enemy_type" type="int" value="0"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="3"/>
+   </properties>
+  </object>
+  <object id="154" gid="5" x="384" y="4992" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="1"/>
+    <property name="enemy_type" type="int" value="0"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="3"/>
+   </properties>
+  </object>
+  <object id="155" gid="5" x="-64" y="4992" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="1"/>
+    <property name="enemy_type" type="int" value="0"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="3"/>
+   </properties>
+  </object>
+  <object id="156" gid="5" x="400" y="5952" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="1"/>
+    <property name="enemy_type" type="int" value="0"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="3"/>
+   </properties>
+  </object>
+  <object id="157" gid="5" x="-80" y="5696" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="1"/>
+    <property name="enemy_type" type="int" value="0"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="3"/>
+   </properties>
+  </object>
+  <object id="158" gid="5" x="-64" y="6176" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="1"/>
+    <property name="enemy_type" type="int" value="0"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="3"/>
+   </properties>
+  </object>
+  <object id="159" gid="4" x="64" y="6240" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="160" gid="4" x="240" y="6016" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="161" gid="4" x="16" y="5792" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="162" gid="4" x="48" y="5760" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="163" gid="4" x="80" y="5728" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="164" gid="4" x="272" y="5568" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="166" gid="4" x="160" y="5328" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="167" gid="4" x="32" y="4880" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="168" gid="4" x="256" y="4688" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="169" gid="4" x="160" y="4672" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="170" gid="4" x="272" y="4240" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="173" gid="4" x="16" y="4208" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="174" gid="4" x="240" y="4176" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="177" gid="4" x="112" y="4144" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="181" gid="4" x="208" y="4112" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="183" gid="4" x="160" y="4080" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="184" gid="4" x="144" y="2880" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="185" gid="4" x="176" y="2848" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="186" gid="4" x="112" y="2816" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="187" gid="4" x="224" y="2784" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="188" gid="4" x="80" y="2752" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="189" gid="4" x="256" y="2736" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="190" gid="4" x="48" y="2736" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="191" gid="4" x="272" y="2448" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="192" gid="4" x="16" y="2384" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="193" gid="4" x="272" y="2176" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="194" gid="4" x="16" y="2064" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="195" gid="4" x="272" y="1936" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="196" gid="4" x="48" y="1696" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="197" gid="4" x="256" y="1440" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="198" gid="4" x="96" y="1280" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="199" gid="4" x="208" y="1024" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="200" gid="4" x="32" y="656" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="201" gid="4" x="96" y="560" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="202" gid="4" x="256" y="576" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="203" gid="4" x="160" y="528" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="204" gid="4" x="32" y="384" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="205" gid="4" x="128" y="272" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="206" gid="4" x="96" y="400" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="207" gid="4" x="192" y="368" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="208" gid="4" x="224" y="336" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="209" gid="4" x="256" y="304" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="210" gid="4" x="64" y="304" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="211" gid="4" x="160" y="320" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="213" gid="7" x="224" y="8448" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="214" gid="7" x="144" y="8208" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="215" gid="7" x="64" y="7952" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="216" gid="7" x="224" y="7728" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="217" gid="7" x="80" y="7536" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="218" gid="7" x="112" y="7296" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="219" gid="7" x="224" y="7056" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="220" gid="7" x="64" y="6816" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="221" gid="7" x="224" y="6560" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="222" gid="7" x="112" y="6368" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="223" gid="7" x="224" y="6192" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="224" gid="7" x="96" y="5904" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="225" gid="7" x="80" y="5456" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="226" gid="7" x="192" y="5200" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
+   </properties>
+  </object>
+  <object id="227" gid="7" x="208" y="5024" width="24" height="24">
+   <properties>
+    <property name="damage" type="int" value="2"/>
+    <property name="enemy_type" type="int" value="1"/>
+    <property name="exportPosition" type="bool" value="true"/>
+    <property name="speed" type="float" value="4"/>
    </properties>
   </object>
  </objectgroup>

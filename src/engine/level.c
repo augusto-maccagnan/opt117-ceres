@@ -52,9 +52,9 @@ u16 LEVEL_init(u16 ind, u8 rooms) {
 	case 4:
 		map = MAP_create(&level4_map, BG_MAP, TILE_ATTR_FULL(PAL_MAP, FALSE, FALSE, FALSE, ind));
 		break;
-	// case 5:
-	// 	map = MAP_create(&level5_map, BG_MAP, TILE_ATTR_FULL(PAL_MAP, FALSE, FALSE, FALSE, ind));
-	// 	break;
+	case 5:
+		map = MAP_create(&level5_map, BG_MAP, TILE_ATTR_FULL(PAL_MAP, FALSE, FALSE, FALSE, ind));
+		break;
 	default:
 		break;
 	}

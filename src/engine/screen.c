@@ -30,12 +30,25 @@ void SCREEN_game_clear_update(){
     #ifdef DEBUG
     kprintf("GAME CLEAR SCREEN\n");
     #endif
-    VDP_setTextPlane(BG_BACKGROUND);
-    VDP_setScrollingMode(HSCROLL_PLANE, VSCROLL_PLANE);
-    VDP_setVerticalScroll(BG_BACKGROUND, 0);
-    VDP_drawText("GAME CLEAR", SCREEN_METATILES_H/2, SCREEN_METATILES_W/2 + 1);
-    VDP_drawText("Press ACTION to restart", SCREEN_METATILES_H/2, SCREEN_METATILES_W/2 + 3);
-    SPR_reset();
+    VDP_clearPlane(WINDOW, TRUE);
+    VDP_clearPlane(BG_BACKGROUND, TRUE);
+    VDP_setWindowVPos(FALSE, SCREEN_TILES_H);
+    PAL_setPalette(PAL_BACKGROUND, menu_screen.palette->data, DMA);
+    VDP_drawImageEx(WINDOW, &menu_screen, TILE_ATTR_FULL(PAL_BACKGROUND, 0, 0, 0, TILE_USER_INDEX), 0, 0, TRUE, DMA);
+
+    VDP_setTextPlane(WINDOW);
+    VDP_setTextPalette(PAL_BACKGROUND);
+	VDP_setBackgroundColor(PAL_BACKGROUND*16+11);
+
+    VDP_drawText("Game Clear !", SCREEN_METATILES_W/2 + 4, SCREEN_METATILES_H/2 + 7);
+    VDP_drawText("> Continue", SCREEN_METATILES_W/2 + 3, SCREEN_METATILES_H/2 + 9);
+
+    VDP_drawText("Desenvolvimento: Augusto", 2, SCREEN_METATILES_H * 2 - 7);
+    VDP_drawText("                 M. Silvano", 2, SCREEN_METATILES_H * 2 - 6);
+    VDP_drawText("Design:          Augusto", 2, SCREEN_METATILES_H * 2 - 5);
+    VDP_drawText("Arte:            Augusto", 2, SCREEN_METATILES_H * 2 - 4);
+    VDP_drawText("Som:             A. Preradovic", 2, SCREEN_METATILES_H * 2 - 3);
+    VDP_drawText("                 Z. Rubenstein", 2, SCREEN_METATILES_H * 2 - 2);
     while(true) {
         update_input();
         // wait for the player to press the action button
@@ -94,12 +107,14 @@ void SCREEN_menu(){
 	// PAL_setColor(PAL_BACKGROUND*16+15, RGB24_TO_VDPCOLOR(0x00EE00));	// text fg, pal index 15
 	// PAL_setColor(PAL_BACKGROUND*16+6,  RGB24_TO_VDPCOLOR(0x494949));	// text bg, index of the whiter color in palette
     VDP_setTextPlane(WINDOW);
-    VDP_drawText("Press Action to Start Game", SCREEN_METATILES_W/2 - 2, SCREEN_METATILES_H/2 + 8);
+    VDP_drawText("> Start Game", SCREEN_METATILES_W/2 + 3, SCREEN_METATILES_H/2 + 8);
 
-    VDP_drawText("Desenvolvimento: Augusto", 2, SCREEN_METATILES_H * 2 - 5);
-    VDP_drawText("Design:          Augusto", 2, SCREEN_METATILES_H * 2 - 4);
-    VDP_drawText("Arte:            Augusto", 2, SCREEN_METATILES_H * 2 - 3);
-    VDP_drawText("Som:                    ", 2, SCREEN_METATILES_H * 2 - 2);
+    VDP_drawText("Desenvolvimento: Augusto", 2, SCREEN_METATILES_H * 2 - 7);
+    VDP_drawText("                 M. Silvano", 2, SCREEN_METATILES_H * 2 - 6);
+    VDP_drawText("Design:          Augusto", 2, SCREEN_METATILES_H * 2 - 5);
+    VDP_drawText("Arte:            Augusto", 2, SCREEN_METATILES_H * 2 - 4);
+    VDP_drawText("Som:             A. Preradovic", 2, SCREEN_METATILES_H * 2 - 3);
+    VDP_drawText("                 Z. Rubenstein", 2, SCREEN_METATILES_H * 2 - 2);
     while(true) {
         update_input();
         // wait for the player to press the action button

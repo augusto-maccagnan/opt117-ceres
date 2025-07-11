@@ -139,7 +139,6 @@ void spawn_enemies() {
 	case 1:
 		break;
 	case 2:
-		// entering level 2, start spawning enemies
 		mapobj = MAPOBJ_lookup_enemies(level2_enemies, LEN(level2_enemies));
 		while(mapobj){
 			// looks for an available space in the enemy pool
@@ -150,6 +149,7 @@ void spawn_enemies() {
 			ENEMY_init(enemy, mapobj, ind);
 			mapobj = MAPOBJ_lookup_enemies(level2_enemies, LEN(level2_enemies));
 		}
+		break;
 	case 3:
 		mapobj = MAPOBJ_lookup_enemies(level3_enemies, LEN(level3_enemies));
 		while(mapobj){
@@ -163,8 +163,28 @@ void spawn_enemies() {
 		}
 		break;
 	case 4:
+		mapobj = MAPOBJ_lookup_enemies(level4_enemies, LEN(level4_enemies));
+		while(mapobj){
+			// looks for an available space in the enemy pool
+			GameObject* enemy = OBJPOOL_get_available(&enemy_pool);
+			if (!enemy) return;
+			// Enemy factory function: It gets the needed data from MapObject
+			// ENEMY_init(enemy, mapobj, enemy_tiles_ind);
+			ENEMY_init(enemy, mapobj, ind);
+			mapobj = MAPOBJ_lookup_enemies(level4_enemies, LEN(level4_enemies));
+		}
 		break;
 	case 5:
+		mapobj = MAPOBJ_lookup_enemies(level5_enemies, LEN(level5_enemies));
+		while(mapobj){
+			// looks for an available space in the enemy pool
+			GameObject* enemy = OBJPOOL_get_available(&enemy_pool);
+			if (!enemy) return;
+			// Enemy factory function: It gets the needed data from MapObject
+			// ENEMY_init(enemy, mapobj, enemy_tiles_ind);
+			ENEMY_init(enemy, mapobj, ind);
+			mapobj = MAPOBJ_lookup_enemies(level5_enemies, LEN(level5_enemies));
+		}
 		break;
 	default:
 		break;
@@ -201,7 +221,7 @@ void game_next_level() {
 	// increment current level
 	current_level++;
 	// show transition screen
-	if (current_level > 4) {
+	if (current_level > 5) {
 		current_level = 0;
 		game_state = GAME_CLEAR;
 		return;
@@ -234,7 +254,7 @@ void game_next_level() {
 	ind += BACKGROUND_init(ind);
 	ind += LEVEL_init(ind, level_rooms);
 	// holds transition screen for 3 seconds
-	while(transition_timer < (60*2)){
+	while(transition_timer < (60*1)){
 		transition_timer++;
 		SPR_update();
         SYS_doVBlankProcess();
@@ -255,7 +275,7 @@ void game_init() {
 	VDP_setScreenWidth320();
 	VDP_setPlaneSize(64, 64, TRUE);
 	SPR_init();
-	
+
 	SYS_showFrameLoad(true);
 	
 	// show menu screen
@@ -307,6 +327,7 @@ inline void update_enemies() {
 					default:
 						break;
 					}
+					// ENEMY_on_hit(obj);
 				}
 			}
 		}
@@ -359,6 +380,10 @@ static inline void game_update() {
 
 
 	LEVEL_update_camera(&player, level_rooms);
+
+	if(!XGM2_isPlaying()){
+		XGM2_playTrack(1);
+	}
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -372,6 +397,11 @@ int main(bool resetType) {
 	SYS_showFrameLoad(true);
 	
 	SYS_doVBlankProcess();
+
+	XGM2_load(background_track);
+	XGM2_setLoopNumber(-1);
+	XGM2_setFMVolume(30);
+	XGM2_playTrack(1);
 
 	while (true) {
 		switch (game_state) {
@@ -394,8 +424,6 @@ int main(bool resetType) {
 		SPR_update();
 		SYS_doVBlankProcess();
 
-		// update VDP map manually
-		// LEVEL_update_items_in_VDP();
 	}
 
 	return 0;
