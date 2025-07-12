@@ -10,7 +10,7 @@
 // #define DEBUG
 
 GameObject player;
-u8 shoot_timer = 0;
+f16 shoot_timer = 0;
 u8 shoot_count = 0;
 GameObject shots[MAX_SHOTS];
 // handle player immunity
@@ -38,9 +38,9 @@ u16 PLAYER_init(u16 ind) {
 // UPDATE
 
 void PLAYER_update() {
-	shoot_timer += 1 + (1 * player.up_freq);
-	if(shoot_timer > MAX_U8 - SHOOT_DELAY){
-		shoot_timer = SHOOT_DELAY + 1;
+	shoot_timer += F16(1 + (0.3 * player.up_freq));
+	if(F16_toInt(shoot_timer) > MAX_U8 - SHOOT_DELAY){
+		shoot_timer = F16(SHOOT_DELAY + 1);
 	}
 	// input
 	PLAYER_get_input_dir8();
@@ -111,7 +111,7 @@ void PLAYER_get_input_dir8() {
 
 	if(key_down(JOY_1, BUTTON_A)) {
 		// validate minimun delay between shots
-		if(shoot_timer > SHOOT_DELAY) {
+		if(F16_toInt(shoot_timer) > SHOOT_DELAY) {
 			PLAYER_shoot();
 			shoot_timer = 0;
 		}

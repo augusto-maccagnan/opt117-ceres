@@ -272,6 +272,14 @@ void ENEMY_on_hit(GameObject* power_up, GameObject* enemy) {
         power_up->type = PUP_IMN;
         power_up->sprite->data = PUP_IMN;
     }
+    if(player_score > 400 && player_score < 430){
+        GAMEOBJECT_init_no_pal(power_up, &spr_power_firespd, F16_toInt(enemy->x), F16_toInt(enemy->y), 0, -4, PAL_ENEMY, frq_up_index);
+        power_up->speed_x = 0;
+        power_up->speed_y = F16(2);
+        power_up->active = TRUE;
+        power_up->type = PUP_FIRESPD;
+        power_up->sprite->data = PUP_FIRESPD;
+    }
     SPR_setAutoTileUpload(power_up->sprite, FALSE);
     SPR_setFrameChangeCallback(power_up->sprite, &pwup_frame_changed);
 }

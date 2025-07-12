@@ -5,6 +5,7 @@
 #include "engine/gameobject.h"
 #include "engine/mapobjects.h"
 #include "entities/shoot.h"
+#include "engine/hud.h"
 
 #define ENEMY_UFO 0
 #define ENEMY_RKT  1
