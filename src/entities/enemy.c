@@ -8,10 +8,17 @@
 static u16** ufo_indexes;
 static u16** rkt_indexes;
 static u16** kaz_indexes;
+static u16** sht_up_indexes;
+static u16** frq_up_indexes;
+static u16** imn_up_indexes;
 
 u16 ufo_index;
 u16 rkt_index;
 u16 kaz_index;
+
+u16 sht_up_index;
+u16 frq_up_index;
+u16 imn_up_index;
 
 ////////////////////////////////////////////////////////////////////////////
 // PRIVATE PROTOTYPES
@@ -34,6 +41,19 @@ u16 ENEMY_load_tiles(u16 ind) {
 
     rkt_index = ind;
     rkt_indexes = SPR_loadAllFrames(&spr_rkt, ind, &num_tiles);
+    ind += num_tiles;
+
+    sht_up_index = ind;
+    sht_up_indexes = SPR_loadAllFrames(&spr_power_shoot, ind, &num_tiles);
+    ind += num_tiles;
+
+    frq_up_index = ind;
+    frq_up_indexes = SPR_loadAllFrames(&spr_power_firespd, ind, &num_tiles);
+    ind += num_tiles;
+    
+    imn_up_index = ind;
+    imn_up_indexes = SPR_loadAllFrames(&spr_power_imnt, ind, &num_tiles);
+    ind += num_tiles;
 
     return ind - aux;
 }
@@ -190,7 +210,7 @@ void ENEMY_rkt_update(GameObject* obj) {
     obj->x += obj->speed_x;
     obj->y += obj->speed_y;
     
-    if(F16_toInt(obj->y) + obj->h > SCREEN_H){
+    if(F16_toInt(obj->y) + 16 > SCREEN_H){
         obj->active = FALSE;
     }
 
@@ -216,7 +236,7 @@ void ENEMY_kaz_update(GameObject* obj) {
         // obj->speed_x = F16_mul(F16_cos(F16_atan2(obj->y - player.y, obj->x - player.x)), -obj->speed);
     // }
 
-    if(F16_toInt(obj->y) + obj->h > SCREEN_H){
+    if(F16_toInt(obj->y) + 16 > SCREEN_H){
         obj->active = FALSE;
     }
 
@@ -224,22 +244,50 @@ void ENEMY_kaz_update(GameObject* obj) {
     GAMEOBJECT_set_hwsprite_position(obj);
 }
 
-// void ENEMY_on_hit(GameObject* obj) {
-//     u8 number = random() % 100;
+void ENEMY_on_hit(GameObject* power_up, GameObject* enemy) {
+    u8 number = random() % 100;
+    #ifdef DEBUG
+    kprintf("ENEMY_on_hit: x:%d y:%d", F16_toInt(obj->x)/16, F16_toInt(obj->y)/16);
+    #endif
 
-//     // drop power-up 1: 10%
-//     if(number < 10){
+    SPR_setVisibility(power_up->sprite, VISIBLE);
+    // VDP_setTileMapColumn(BG_A, F16_toInt(obj->x)/16, F16_toInt(obj->y)/16, TILE_ATTR_FULL(PAL_MAP, 0, 0, 0, ind), 1, DMA);
+    if(number < 10){
+    } else
+    // drop power-up 2: 3%
+    if(number < 14){
+        GAMEOBJECT_init_no_pal(power_up, &spr_power_firespd, F16_toInt(enemy->x), F16_toInt(enemy->y), 0, -4, PAL_ENEMY, frq_up_index);
+        power_up->speed_x = 0;
+        power_up->speed_y = F16(2);
+        power_up->active = TRUE;
+        power_up->type = PUP_FIRESPD;
+        power_up->sprite->data = PUP_FIRESPD;
+    } else 
+    // drop power-up 3: 5%
+    if(number < 18){
+        GAMEOBJECT_init_no_pal(power_up, &spr_power_imnt, F16_toInt(enemy->x), F16_toInt(enemy->y), 0, -4, PAL_ENEMY, imn_up_index);
+        power_up->speed_x = 0;
+        power_up->speed_y = F16(2);
+        power_up->active = TRUE;
+        power_up->type = PUP_IMN;
+        power_up->sprite->data = PUP_IMN;
+    }
+    SPR_setAutoTileUpload(power_up->sprite, FALSE);
+    SPR_setFrameChangeCallback(power_up->sprite, &pwup_frame_changed);
+}
 
-//     } else
-//     // drop power-up 2: 5%
-//     if(number < 15){
+void POWERUP_update(GameObject* obj){
+    obj->x += obj->speed_x;
+    obj->y += obj->speed_y;
 
-//     } else 
-//     // drop power-up 3: 3%
-//     if(number < 18){
-        
-//     }
-// }
+    // if power-up is out of screen, despawn it
+    if(F16_toInt(obj->y) + 8 > SCREEN_H){
+        obj->active = FALSE;
+        return;
+    }
+    GAMEOBJECT_update_boundbox(obj->x, obj->y, obj);
+    GAMEOBJECT_set_hwsprite_position(obj);
+}
 
 // Much worst performer...
 // void ENEMY_update2(GameObject* obj) {
@@ -278,6 +326,28 @@ static void frame_changed(Sprite* sprite) {
         break;
     case ENEMY_KAZ:
         tileIndex = kaz_indexes[sprite->animInd][sprite->frameInd];
+        break;
+    default:
+        return;
+        break;
+    }
+    // manually set tile index for the current frame (preloaded in VRAM)
+    SPR_setVRAMTileIndex(sprite, tileIndex);
+}
+
+static void pwup_frame_changed(Sprite* sprite) {
+    // get VRAM tile index for this animation of this sprite
+    u16 tileIndex;
+    switch (sprite->data)
+    {
+    case PUP_SHOOT:
+        tileIndex = sht_up_indexes[sprite->animInd][sprite->frameInd];
+        break;
+    case PUP_FIRESPD:
+        tileIndex = frq_up_indexes[sprite->animInd][sprite->frameInd];
+        break;
+    case PUP_IMN:
+        tileIndex = imn_up_indexes[sprite->animInd][sprite->frameInd];
         break;
     default:
         return;

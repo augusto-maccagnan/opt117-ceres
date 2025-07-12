@@ -100,17 +100,27 @@ enum GAME_STATE game_state;
 // enemies pool
 #define MAX_ENEMIES 50
 GameObject enemy_array[MAX_ENEMIES];
-// u16 enemy_tiles_ind;
 ObjectsPool enemy_pool;
+
+// power-ups pool
+#define MAX_POWER_UPS 10
+GameObject p_up_array[MAX_POWER_UPS];
+ObjectsPool p_up_pool;
 
 void init_enemies() {
 	OBJPOOL_init(&enemy_pool, enemy_array, LEN(enemy_array));
-
+	OBJPOOL_init(&p_up_pool, p_up_array, LEN(p_up_array));
 	curr_mapobj = 0;
 
 	// load enemy tiles
-	// enemy_tiles_ind = ind;
 	ind += ENEMY_load_tiles(ind);
+}
+
+// power-ups init
+void init_power_ups(GameObject* enemy){
+	GameObject* power_up = OBJPOOL_get_available(&p_up_pool);
+	if (!power_up) return;
+	ENEMY_on_hit(power_up, enemy);
 }
 
 // shoots pool
@@ -209,6 +219,10 @@ void init_state() {
 	current_level = 1;
 
 	player.health = PLAYER_MAX_HEALTH;
+
+	player.up_freq = 0;
+	player.up_immunity = 0;
+	player.up_shoot = 0;
 }
 
 void game_next_level() {
@@ -265,6 +279,7 @@ void game_next_level() {
 	init_enemies();
 
 	HUD_update_health(player.health);
+	HUD_update_power_up(&player);
 
 	game_state = GAME_PLAYING;
 }
@@ -327,7 +342,8 @@ inline void update_enemies() {
 					default:
 						break;
 					}
-					// ENEMY_on_hit(obj);
+					XGM2_playPCM(sfx_explosion, sizeof(sfx_explosion), SOUND_PCM_CH_AUTO);
+					init_power_ups(obj);
 				}
 			}
 		}
@@ -368,12 +384,35 @@ inline void update_shots() {
 	}
 }
 
+inline void update_power_ups() {
+	GameObject* obj = OBJPOOL_loop_init(&p_up_pool);
+	while (obj) {
+		POWERUP_update(obj);
+		GameObject* obj_to_release = NULL;
+		if (GAMEOBJECT_check_collision(&player, obj)) {
+			PLAYER_power_up(obj);
+			obj_to_release = obj;
+		}
+
+		// power-up inactivation, by going out of screen
+		if(!obj->active){
+			obj_to_release = obj;
+		}
+		obj = OBJPOOL_loop_next(&p_up_pool);
+		if (obj_to_release) {
+			OBJPOOL_release(&p_up_pool, obj_to_release);
+		}
+	}
+}
+
 static inline void game_update() {
 	update_input();
 
 	PLAYER_update();
 	update_enemies();
 	update_shots();
+
+	update_power_ups();
 
 	spawn_enemies();
 	BACKGROUND_update();

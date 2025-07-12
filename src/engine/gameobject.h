@@ -34,6 +34,9 @@ typedef struct GameObject {
 	u8 damage;
 	u8 phase;
 	u8 type;
+	u8 up_shoot;
+	u8 up_freq;
+	u8 up_immunity;
 
 	struct GameObject* next;		// for the Linked Lists in OBJECTS POOL
 

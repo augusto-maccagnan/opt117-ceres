@@ -18,6 +18,10 @@ WAV     sfx_explosion       "sounds/explosion.wav" XGM2
 # Geral Level Resources
 TILESET level_tiles         "levels/level1/ceres_tiles.png" BEST ALL
 PALETTE level_pal           "levels/level1/level1.pal"
+SPRITE  spr_power_shoot         "sprites/shoot_powerup.png" 2 2 FAST
+SPRITE  spr_power_firespd       "sprites/freq_powerup.png" 2 2 FAST
+SPRITE  spr_power_imnt        "sprites/imun_powerup.png" 2 2 FAST
+
 # Level 1 Resources
 MAP     level1_map          "levels/level1/level1.tmx" map_layer BEST 0
 IMAGE   level1_transition   "screens/level1_screen.png" BEST

@@ -24,11 +24,13 @@ u16 ENEMY_init(GameObject* const obj, const MapObject* const mapobj, u16 ind);
 void ENEMY_ufo_update(GameObject* obj);
 void ENEMY_rkt_update(GameObject* obj);
 void ENEMY_kaz_update(GameObject* obj);
-// void ENEMY_on_hit(GameObject* obj);
+void ENEMY_on_hit(GameObject* power_up, GameObject* enemy);
 
+void POWERUP_update(GameObject* obj);
 ////////////////////////////////////////////////////////////////////////////
 // PRIVATE MEMBERS
 
 static void frame_changed(Sprite* sprite);
+static void pwup_frame_changed(Sprite* sprite);
 
 #endif

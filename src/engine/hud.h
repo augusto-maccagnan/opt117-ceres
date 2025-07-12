@@ -14,5 +14,6 @@ void HUD_score(u8 value);
 void HUD_update_score();
 
 u16 HUD_init(u16 ind);
+void HUD_update_power_up(GameObject* player);
 
 #endif

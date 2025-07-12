@@ -66,30 +66,36 @@ u8 SCREEN_level_transition(u8 level, u8 ind){
     #ifdef DEBUG
     kprintf("LEVEL %d TRANSITION SCREEN\n", level);
     #endif
+    u8 num_tiles = 0;
     VDP_clearPlane(WINDOW, TRUE);
     VDP_setWindowVPos(FALSE, SCREEN_TILES_H);
     switch (level) {
     case 1:
         PAL_setPalette(PAL_BACKGROUND, level1_transition.palette->data, DMA);
         VDP_drawImageEx(WINDOW, &level1_transition, TILE_ATTR_FULL(PAL_BACKGROUND, 1, 0, 0, ind), 0, 0, TRUE, DMA);
+        num_tiles = level1_transition.tileset->numTile;
         break;
     case 2:
         VDP_drawImageEx(WINDOW, &level2_transition, TILE_ATTR_FULL(PAL_BACKGROUND, 1, 0, 0, ind), 0, 0, TRUE, DMA);
+        num_tiles = level2_transition.tileset->numTile;
         break;
     case 3:
         VDP_drawImageEx(WINDOW, &level3_transition, TILE_ATTR_FULL(PAL_BACKGROUND, 1, 0, 0, ind), 0, 0, TRUE, DMA);
+        num_tiles = level3_transition.tileset->numTile;
         break;
     case 4:
         VDP_drawImageEx(WINDOW, &level4_transition, TILE_ATTR_FULL(PAL_BACKGROUND, 1, 0, 0, ind), 0, 0, TRUE, DMA);
+        num_tiles = level4_transition.tileset->numTile;
         break;
     case 5:
         VDP_drawImageEx(WINDOW, &level5_transition, TILE_ATTR_FULL(PAL_BACKGROUND, 1, 0, 0, ind), 0, 0, TRUE, DMA);
+        num_tiles = level5_transition.tileset->numTile;
         break;
     default:
         VDP_drawText("UNKNOWN LEVEL", SCREEN_METATILES_H/2, SCREEN_METATILES_W/2 + 1);
         break;
     }
-    return level1_transition.tileset->numTile;
+    return num_tiles;
 }
 
 void SCREEN_menu(){

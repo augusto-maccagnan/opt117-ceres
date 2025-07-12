@@ -9,7 +9,7 @@
 #define ANIM_HORIZONTAL  1
 
 #define SHOOT_DELAY 10
-#define MAX_SHOTS 15
+#define MAX_SHOTS 20
 #define SHOOT_SPEED 8
 #define IMMUNITY_TIME 15
 
@@ -44,6 +44,9 @@ void PLAYER_immunity_update();
 void PLAYER_shoot();
 void SHOTS_update();
 void SHOOT_collision(GameObject* shot);
+
+// Power-ups logic
+void PLAYER_power_up(GameObject* obj);
 
 //DEBUGGING
 void DEBUG_collision_map(s16 x, s16 y);

@@ -38,8 +38,8 @@ u16 PLAYER_init(u16 ind) {
 // UPDATE
 
 void PLAYER_update() {
-	shoot_timer++;
-	if(shoot_timer == MAX_U8 - 1){
+	shoot_timer += 1 + (1 * player.up_freq);
+	if(shoot_timer > MAX_U8 - SHOOT_DELAY){
 		shoot_timer = SHOOT_DELAY + 1;
 	}
 	// input
@@ -244,11 +244,11 @@ void PLAYER_damage(u8 damage) {
 	if (player.health <= 0) {
 		player.health = 0;
 		// XGM_startPlayPCM(SFX_EXPLOSION, 1,SOUND_PCM_CH3);
-		XGM2_playPCM(sfx_explosion, sizeof(sfx_shoot), SOUND_PCM_CH_AUTO);
+		XGM2_playPCM(sfx_explosion, sizeof(sfx_explosion), SOUND_PCM_CH_AUTO);
 		game_state = GAME_OVER;
 	}
 	immunity = true;
-	immunity_time = IMMUNITY_TIME;
+	immunity_time = IMMUNITY_TIME + (IMMUNITY_TIME * player.up_immunity);
 }
 
 void PLAYER_immunity_update() {
@@ -379,4 +379,34 @@ void DEBUG_collision_map(s16 x, s16 y) {
 	}
 	row[SCREEN_METATILES_W] = '\0';
 	kprintf("y=%d row: %s", (y + 16)/16, row);
+}
+
+void PLAYER_power_up(GameObject* obj){
+	switch (obj->type){
+	case PUP_SHOOT:
+		if(player.up_shoot < 3){
+			player.up_shoot++;
+		}
+		obj->active = FALSE;
+		SPR_setVisibility(obj->sprite, HIDDEN);
+		break;
+	case PUP_FIRESPD:
+		// increase player fire rate
+		if(player.up_freq < 1){
+			player.up_freq++;
+		}
+		obj->active = FALSE;
+		SPR_setVisibility(obj->sprite, HIDDEN);
+		break;
+	case PUP_IMN:
+		if(player.up_immunity < 1){
+			player.up_immunity++;
+		}
+		obj->active = FALSE;
+		SPR_setVisibility(obj->sprite, HIDDEN);
+		break;
+	default:
+		break;
+	}
+	HUD_update_power_up(&player);
 }

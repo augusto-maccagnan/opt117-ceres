@@ -92,4 +92,8 @@ extern u8 current_level;
 #define SFX_LASER 64
 #define SFX_EXPLOSION 65
 
+#define PUP_SHOOT 0
+#define PUP_FIRESPD 1
+#define PUP_IMN 2
+
 #endif

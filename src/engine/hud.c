@@ -41,3 +41,15 @@ void HUD_update_score() {
 	intToStr(player_score, score, 4);
 	VDP_drawText(score, 27, 0);
 }
+
+void HUD_update_power_up(GameObject* player){
+	if(player->up_shoot) {
+		VDP_drawText("S", 35, 0);
+	}
+	if(player->up_freq) {
+		VDP_drawText("F", 36, 0);
+	}
+	if(player->up_immunity) {
+		VDP_drawText("I", 37, 0);
+	}
+}
